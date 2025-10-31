@@ -1,0 +1,247 @@
+{
+  "screenSize": {
+    "width": {
+      "value": 720,
+      "type": "number",
+      "description": "Screen width"
+    },
+    "height": {
+      "value": 1280,
+      "type": "number",
+      "description": "Screen height"
+    }
+  },
+  "debugConfig": {
+    "debug": {
+      "value": false,
+      "type": "boolean",
+      "description": "Enable debug mode"
+    }
+  },
+  "renderConfig": {
+    "pixelArt": {
+      "value": true,
+      "type": "boolean",
+      "description": "Whether to enable pixel art rendering"
+    }
+  },
+  "bearConfig": {
+    "flapPower": {
+      "value": 450,
+      "type": "number",
+      "description": "Upward velocity when flapping"
+    },
+    "gravity": {
+      "value": 1200,
+      "type": "number",
+      "description": "Gravity pulling bear down"
+    },
+    "maxFallSpeed": {
+      "value": 600,
+      "type": "number",
+      "description": "Maximum falling speed"
+    },
+    "rotationSpeed": {
+      "value": 0.003,
+      "type": "number",
+      "description": "Bear rotation based on velocity"
+    }
+  },
+  "gameplayConfig": {
+    "tubeSpawnInterval": {
+      "value": 2200,
+      "type": "number",
+      "description": "Initial milliseconds between tube spawns (starts easier)"
+    },
+    "tubeScrollSpeed": {
+      "value": 180,
+      "type": "number",
+      "description": "Initial tube scroll speed (starts slower)"
+    },
+    "tubeGapSize": {
+      "value": 310,
+      "type": "number",
+      "description": "Initial gap between top and bottom tubes (starts larger for easier beginning)"
+    },
+    "tokenSpawnChance": {
+      "value": 0.5,
+      "type": "number",
+      "description": "Probability of spawning a token (0-1)"
+    },
+    "goldenBearTokenChance": {
+      "value": 0.15,
+      "type": "number",
+      "description": "Probability golden bear token instead of XRP token (0-1)"
+    },
+    "pointsPerTube": {
+      "value": 1,
+      "type": "number",
+      "description": "Points for passing a tube"
+    },
+    "pointsPerXRPToken": {
+      "value": 2.5,
+      "type": "number",
+      "description": "Points for collecting XRP token"
+    },
+    "pointsPerGoldenBearToken": {
+      "value": 5,
+      "type": "number",
+      "description": "Points for collecting golden bear token"
+    },
+    "comboThreshold": {
+      "value": 3,
+      "type": "number",
+      "description": "Coins in a row for combo multiplier"
+    },
+    "comboMultiplier": {
+      "value": 2,
+      "type": "number",
+      "description": "Points multiplier for combo"
+    },
+    "difficultyIncreaseInterval": {
+      "value": 4,
+      "type": "number",
+      "description": "Score interval for difficulty increase (increases faster)"
+    },
+    "speedIncreasePerLevel": {
+      "value": 20,
+      "type": "number",
+      "description": "Speed increase per difficulty level (ramps up faster)"
+    },
+    "gapDecreasePerLevel": {
+      "value": 12,
+      "type": "number",
+      "description": "Gap decrease per difficulty level (gets harder faster)"
+    },
+    "minGapSize": {
+      "value": 140,
+      "type": "number",
+      "description": "Minimum gap between tubes"
+    },
+    "tubeSpawnVariance": {
+      "value": 600,
+      "type": "number",
+      "description": "Random variance in tube spawn timing (milliseconds)"
+    },
+    "spawnIntervalDecreasePerLevel": {
+      "value": 120,
+      "type": "number",
+      "description": "Decrease spawn interval per level (tubes spawn faster)"
+    },
+    "minSpawnInterval": {
+      "value": 1000,
+      "type": "number",
+      "description": "Minimum spawn interval between tubes"
+    },
+    "timeBasedSpeedIncreaseInterval": {
+      "value": 8000,
+      "type": "number",
+      "description": "Milliseconds between time-based speed increases"
+    },
+    "timeBasedSpeedIncrease": {
+      "value": 8,
+      "type": "number",
+      "description": "Speed increase amount every time interval"
+    }
+  },
+  "enemyConfig": {
+    "enemySpawnChance": {
+      "value": 0.1,
+      "type": "number",
+      "description": "Base chance to spawn enemy (starts lower)"
+    },
+    "enemySpawnIncreasePerLevel": {
+      "value": 0.12,
+      "type": "number",
+      "description": "Increase in spawn chance per difficulty level (ramps up faster)"
+    },
+    "maxEnemySpawnChance": {
+      "value": 0.8,
+      "type": "number",
+      "description": "Maximum enemy spawn chance (0-1)"
+    }
+  },
+  "powerUpConfig": {
+    "jesterHatSpawnChance": {
+      "value": 0.08,
+      "type": "number",
+      "description": "Chance to spawn jester hat power-up (0-1) - balanced for occasional rewards"
+    },
+    "jesterHatSpawnChanceWhileActive": {
+      "value": 0.15,
+      "type": "number",
+      "description": "Increased chance to spawn jester hat when one is already active (enables stacking)"
+    },
+    "jesterHatDuration": {
+      "value": 5000,
+      "type": "number",
+      "description": "Duration of jester hat power-up in milliseconds"
+    },
+    "jesterHatSpeedMultiplier": {
+      "value": 2,
+      "type": "number",
+      "description": "Speed multiplier when jester hat is active"
+    },
+    "jesterHatControlMultiplier": {
+      "value": 1.15,
+      "type": "number",
+      "description": "Control/flap power multiplier for better precision"
+    },
+    "magnetSpawnChance": {
+      "value": 0.12,
+      "type": "number",
+      "description": "Chance to spawn magnet power-up (0-1)"
+    },
+    "magnetDuration": {
+      "value": 6000,
+      "type": "number",
+      "description": "Duration of magnet power-up in milliseconds"
+    },
+    "magnetRadius": {
+      "value": 300,
+      "type": "number",
+      "description": "Radius of coin attraction for magnet power-up"
+    },
+    "magnetAttractionSpeed": {
+      "value": 800,
+      "type": "number",
+      "description": "Speed at which coins are attracted to bear"
+    },
+    "shieldSpawnChance": {
+      "value": 0.05,
+      "type": "number",
+      "description": "Chance to spawn shield power-up (0-1) - rare but valuable"
+    }
+  },
+  "nearMissConfig": {
+    "nearMissDistance": {
+      "value": 50,
+      "type": "number",
+      "description": "Distance in pixels to trigger near-miss bonus"
+    },
+    "nearMissPoints": {
+      "value": 3,
+      "type": "number",
+      "description": "Bonus points for near-miss"
+    }
+  },
+  "multiplierZoneConfig": {
+    "multiplierZoneChance": {
+      "value": 0.25,
+      "type": "number",
+      "description": "Chance for a pipe to have a multiplier zone (0-1)"
+    },
+    "multiplierZonePoints": {
+      "value": 2,
+      "type": "number",
+      "description": "Point multiplier for passing through zone"
+    }
+  },
+  "bossConfig": {
+    "bossTriggerScore": {
+      "value": 123,
+      "type": "number",
+      "description": "Score required to trigger boss fight"
+    }
+  }
+}
