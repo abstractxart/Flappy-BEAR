@@ -172,10 +172,11 @@ export class GameOverUIScene extends Phaser.Scene {
         top: 0;
         left: 0;
         width: 100%;
-        height: 100%;
+        height: 100vh;
         background: linear-gradient(180deg, ${colors.charcoal} 0%, ${colors.ink} 100%);
         z-index: 10000;
-        overflow-y: auto;
+        overflow-y: scroll;
+        -webkit-overflow-scrolling: touch;
         font-family: 'Luckiest Guy', cursive;
       ">
         <div style="
