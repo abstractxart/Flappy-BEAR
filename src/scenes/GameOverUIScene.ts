@@ -171,13 +171,18 @@ export class GameOverUIScene extends Phaser.Scene {
         position: fixed;
         top: 0;
         left: 0;
-        width: 100%;
+        right: 0;
+        bottom: 0;
+        width: 100vw;
         height: 100vh;
+        min-height: 100vh;
         background: linear-gradient(180deg, ${colors.charcoal} 0%, ${colors.ink} 100%);
-        z-index: 10000;
+        z-index: 999999;
         overflow-y: scroll;
         -webkit-overflow-scrolling: touch;
         font-family: 'Luckiest Guy', cursive;
+        pointer-events: auto;
+        touch-action: auto;
       ">
         <div style="
           max-width: 600px;
@@ -274,6 +279,8 @@ export class GameOverUIScene extends Phaser.Scene {
                 color: #000;
                 margin-bottom: 12px;
                 box-sizing: border-box;
+                pointer-events: auto;
+                touch-action: manipulation;
               "
             />
 
@@ -292,11 +299,15 @@ export class GameOverUIScene extends Phaser.Scene {
                 box-shadow: 0 4px 16px rgba(237,183,35,.5);
                 transition: all 0.2s ease;
                 text-shadow: 1px 1px 0px rgba(255,255,255,0.3);
+                pointer-events: auto;
+                touch-action: manipulation;
               "
               onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 6px 20px rgba(237,183,35,.7)';"
               onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 16px rgba(237,183,35,.5)';"
               onmousedown="this.style.transform='scale(0.95)';"
               onmouseup="this.style.transform='scale(1.05)';"
+              ontouchstart="this.style.transform='scale(0.95)';"
+              ontouchend="this.style.transform='scale(1)';"
             >
               SUBMIT SCORE
             </button>
@@ -341,11 +352,15 @@ export class GameOverUIScene extends Phaser.Scene {
               text-shadow: 3px 3px 0px #000;
               animation: blink 1s ease-in-out infinite alternate;
               margin-bottom: 16px;
+              pointer-events: auto;
+              touch-action: manipulation;
             "
             onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 8px 24px rgba(255,51,51,.7)';"
             onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 6px 20px rgba(255,51,51,.5)';"
             onmousedown="this.style.transform='scale(0.95)';"
             onmouseup="this.style.transform='scale(1.05)';"
+            ontouchstart="this.style.transform='scale(0.95)';"
+            ontouchend="this.style.transform='scale(1)';"
           >
             TAP TO RETRY
           </button>
@@ -365,9 +380,13 @@ export class GameOverUIScene extends Phaser.Scene {
               cursor: pointer;
               transition: all 0.2s ease;
               text-shadow: 2px 2px 0px #000;
+              pointer-events: auto;
+              touch-action: manipulation;
             "
             onmouseover="this.style.background='rgba(255,255,255,0.2)'; this.style.borderColor='${colors.gold}';"
             onmouseout="this.style.background='rgba(255,255,255,0.1)'; this.style.borderColor='rgba(255,255,255,.3)';"
+            ontouchstart="this.style.background='rgba(255,255,255,0.2)'; this.style.borderColor='${colors.gold}';"
+            ontouchend="this.style.background='rgba(255,255,255,0.1)'; this.style.borderColor='rgba(255,255,255,.3)';"
           >
             MAIN MENU
           </button>
