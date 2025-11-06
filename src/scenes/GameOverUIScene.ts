@@ -106,175 +106,319 @@ export class GameOverUIScene extends Phaser.Scene {
   }
 
   createDOMUI(): void {
-    const newHighScoreText = this.isNewHighScore 
-      ? `<div class="text-yellow-300 font-bold mb-2" style="
+    // BEAR Park Theme Colors
+    const colors = {
+      gold: '#edb723',
+      purple: '#680cd9',
+      yellow: '#feb501',
+      green: '#07ae08',
+      charcoal: '#141619',
+      ink: '#0b0d0e'
+    };
+
+    const newHighScoreText = this.isNewHighScore
+      ? `<div style="
            font-size: 28px;
+           color: ${colors.gold};
            text-shadow: 3px 3px 0px #000000;
            animation: sparkle 0.5s ease-in-out infinite alternate;
+           margin-bottom: 20px;
+           font-family: 'Luckiest Guy', cursive;
          ">✨ NEW HIGH SCORE! ✨</div>`
       : '';
-    
-    // Generate leaderboard HTML
+
+    // Generate leaderboard HTML with BEAR Park style
     const leaderboardHTML = this.leaderboard.map((entry, index) => {
-      const isCurrentPlayer = entry.score === this.score && !this.nameSubmitted;
-      const bgColor = index === 0 ? '#FFD700' : (index === 1 ? '#C0C0C0' : (index === 2 ? '#CD7F32' : '#34495E'));
-      const textColor = index < 3 ? '#000000' : '#FFFFFF';
-      
+      const medal = index === 0 ? '🥇' : (index === 1 ? '🥈' : (index === 2 ? '🥉' : ''));
+      const borderColor = index === 0 ? '#FFD700' : (index === 1 ? '#C0C0C0' : (index === 2 ? '#CD7F32' : colors.gold));
+      const borderWidth = index === 0 ? '6px' : (index === 1 ? '5px' : (index === 2 ? '5px' : '4px'));
+      const bgGradient = index === 0
+        ? 'linear-gradient(135deg, rgba(237, 183, 35, 0.3) 0%, rgba(255, 215, 0, 0.2) 100%)'
+        : (index === 1
+          ? 'linear-gradient(135deg, rgba(192, 192, 192, 0.2) 0%, rgba(169, 169, 169, 0.15) 100%)'
+          : (index === 2
+            ? 'linear-gradient(135deg, rgba(205, 127, 50, 0.2) 0%, rgba(184, 115, 51, 0.15) 100%)'
+            : 'linear-gradient(135deg, rgba(104, 12, 217, 0.15) 0%, rgba(7, 174, 8, 0.15) 100%)'));
+
       return `
-        <div class="flex items-center justify-between px-4 py-2 ${isCurrentPlayer ? 'game-3d-container-clickable-[#3498DB]' : ''}" style="background-color: ${bgColor}; border-radius: 8px;">
-          <div class="flex items-center gap-3">
-            <div class="font-bold" style="font-size: 20px; color: ${textColor}; min-width: 30px;">#${index + 1}</div>
-            <div class="font-bold" style="font-size: 18px; color: ${textColor};">${entry.name}</div>
+        <div style="
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 16px;
+          margin-bottom: 12px;
+          border-radius: 12px;
+          background: ${bgGradient};
+          border-left: ${borderWidth} solid ${borderColor};
+          transition: all 0.2s ease;
+          font-family: 'Luckiest Guy', cursive;
+        " onmouseover="this.style.transform='translateX(8px)'" onmouseout="this.style.transform='translateX(0)'">
+          <div style="font-size: 24px; color: ${colors.gold}; text-shadow: 2px 2px 0px #000; min-width: 50px;">
+            ${medal || `#${index + 1}`}
           </div>
-          <div class="flex gap-6">
-            <div class="font-bold" style="font-size: 18px; color: ${textColor};">${entry.score}</div>
-            <div style="font-size: 16px; color: ${textColor};">🪙 ${entry.coins}</div>
+          <div style="font-size: 20px; color: #fff; text-shadow: 2px 2px 0px #000; flex: 1; margin: 0 16px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+            ${entry.name}
+          </div>
+          <div style="font-size: 24px; color: ${colors.yellow}; text-shadow: 2px 2px 0px #000;">
+            ${entry.score.toLocaleString()}
           </div>
         </div>
       `;
     }).join('');
-    
+
     const uiHTML = `
-      <div id="game-over-container" class="fixed top-0 left-0 w-full h-full pointer-events-none z-[1000] font-supercell flex flex-col overflow-y-auto" style="background: linear-gradient(180deg, rgba(44, 62, 80, 0.95) 0%, rgba(52, 73, 94, 0.95) 100%);">
-        <!-- Main Content Container -->
-        <div class="flex flex-col items-center justify-start gap-6 p-6 pt-12 text-center pointer-events-auto pb-32">
-          
+      <div id="game-over-container" style="
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(180deg, ${colors.charcoal} 0%, ${colors.ink} 100%);
+        z-index: 10000;
+        overflow-y: auto;
+        font-family: 'Luckiest Guy', cursive;
+      ">
+        <div style="
+          max-width: 600px;
+          margin: 0 auto;
+          padding: 40px 20px;
+          padding-bottom: calc(160px + env(safe-area-inset-bottom));
+        ">
+
           <!-- Game Over Title -->
-          <div id="game-over-title" class="text-red-400 font-bold pointer-events-none" style="
-            font-size: 56px;
+          <div style="
+            font-size: 64px;
+            text-align: center;
+            color: #ff3333;
             text-shadow: 5px 5px 0px #000000;
-            animation: gameOverBounce 0.8s ease-in-out;
+            margin-bottom: 20px;
+            animation: gameOverPulse 1s ease-in-out infinite alternate;
+            font-family: 'Luckiest Guy', cursive;
           ">GAME OVER</div>
-          
+
           ${newHighScoreText}
 
           <!-- Star Rating -->
-          <div class="flex gap-3 mb-2">
+          <div style="display: flex; justify-content: center; gap: 12px; margin-bottom: 20px;">
             ${this.getStarRatingHTML()}
           </div>
 
-          <!-- Score Display -->
-          <div class="game-3d-container-[#3498DB] px-8 py-4 w-full max-w-sm">
-            <div class="text-white font-bold mb-1" style="font-size: 24px; text-shadow: 2px 2px 0px rgba(0,0,0,0.5);">
+          <!-- Score Card with Tri-Color Border -->
+          <div style="
+            position: relative;
+            background: radial-gradient(500px 200px at 50% -20%, rgba(118,174,255,.12), transparent 60%), ${colors.ink};
+            border-radius: 28px;
+            padding: 32px;
+            margin-bottom: 24px;
+            isolation: isolate;
+          ">
+            <!-- Tri-color border -->
+            <div style="
+              content: '';
+              position: absolute;
+              inset: 0;
+              border-radius: 28px;
+              padding: 4px;
+              background: linear-gradient(135deg, ${colors.purple} 0%, ${colors.purple} 33.33%, ${colors.yellow} 33.33%, ${colors.yellow} 66.66%, ${colors.green} 66.66%, ${colors.green} 100%);
+              -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+              -webkit-mask-composite: xor;
+              mask-composite: exclude;
+              pointer-events: none;
+              z-index: 0;
+              opacity: 1;
+            "></div>
+
+            <div style="font-size: 24px; color: ${colors.gold}; text-shadow: 2px 2px 0px rgba(0,0,0,0.5); margin-bottom: 8px; text-transform: uppercase; text-align: center;">
               YOUR SCORE
             </div>
-            <div class="text-yellow-300 font-bold" style="font-size: 48px; text-shadow: 3px 3px 0px rgba(0,0,0,0.5);">
+            <div style="font-size: 56px; color: #fff; text-shadow: 4px 4px 0px rgba(0,0,0,0.5); text-align: center;">
               ${this.score}
             </div>
-            <div class="text-white mt-1" style="font-size: 18px;">🪙 ${this.coinsCollected} XRP Collected</div>
+            <div style="font-size: 18px; color: #fff; text-align: center; margin-top: 8px;">🪙 ${this.coinsCollected} XRP Collected</div>
           </div>
-          
+
           <!-- Name Entry Form -->
-          <div id="name-entry-container" class="w-full max-w-sm">
-            <div class="game-3d-container-[#6B46C1] px-6 py-4">
-              <div class="text-white font-bold mb-3" style="font-size: 20px; text-shadow: 2px 2px 0px rgba(0,0,0,0.5);">
-                ENTER YOUR NAME
-              </div>
-              <input 
-                id="player-name-input" 
-                type="text" 
-                maxlength="12" 
-                placeholder="Your Name" 
-                class="w-full px-4 py-3 text-center font-bold pointer-events-auto"
-                style="
-                  font-size: 24px;
-                  background-color: rgba(255, 255, 255, 0.9);
-                  border: 4px solid #2C3E50;
-                  border-radius: 8px;
-                  outline: none;
-                  font-family: SupercellMagic;
-                "
-              />
-              <button 
-                id="submit-name-btn" 
-                class="w-full mt-3 game-3d-container-clickable-[#27AE60] px-6 py-3 font-bold pointer-events-auto cursor-pointer"
-                style="font-size: 20px; text-shadow: 2px 2px 0px rgba(0,0,0,0.5); color: white;"
-              >
-                SUBMIT
-              </button>
-            </div>
+          <div id="name-entry-container" style="
+            background: linear-gradient(180deg, rgba(237,183,35,0.12) 0%, #1a1d22 100%);
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 24px;
+            border-bottom: 4px solid;
+            border-image: linear-gradient(to right, ${colors.purple} 0%, ${colors.purple} 33.33%, ${colors.yellow} 33.33%, ${colors.yellow} 66.66%, ${colors.green} 66.66%, ${colors.green} 100%) 1;
+          ">
+            <div style="
+              font-size: 20px;
+              color: ${colors.gold};
+              text-shadow: 2px 2px 0px #000;
+              margin-bottom: 12px;
+              text-align: center;
+              font-family: 'Luckiest Guy', cursive;
+            ">ENTER YOUR NAME</div>
+
+            <input
+              id="player-name-input"
+              type="text"
+              maxlength="12"
+              placeholder="Your Name"
+              style="
+                width: 100%;
+                padding: 16px;
+                font-size: 24px;
+                font-family: 'Luckiest Guy', cursive;
+                text-align: center;
+                background: rgba(255, 255, 255, 0.9);
+                border: 4px solid ${colors.gold};
+                border-radius: 12px;
+                outline: none;
+                color: #000;
+                margin-bottom: 12px;
+                box-sizing: border-box;
+              "
+            />
+
+            <button
+              id="submit-name-btn"
+              style="
+                width: 100%;
+                padding: 16px;
+                font-size: 28px;
+                font-family: 'Luckiest Guy', cursive;
+                background: linear-gradient(135deg, ${colors.gold} 0%, #d4a617 100%);
+                color: #000;
+                border: 3px solid rgba(255,255,255,.5);
+                border-radius: 12px;
+                cursor: pointer;
+                box-shadow: 0 4px 16px rgba(237,183,35,.5);
+                transition: all 0.2s ease;
+                text-shadow: 1px 1px 0px rgba(255,255,255,0.3);
+              "
+              onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 6px 20px rgba(237,183,35,.7)';"
+              onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 16px rgba(237,183,35,.5)';"
+              onmousedown="this.style.transform='scale(0.95)';"
+              onmouseup="this.style.transform='scale(1.05)';"
+            >
+              SUBMIT SCORE
+            </button>
           </div>
+
+          <!-- Leaderboard Title -->
+          <div style="
+            font-size: 32px;
+            color: ${colors.gold};
+            text-shadow: 3px 3px 0px #000;
+            text-align: center;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            font-family: 'Luckiest Guy', cursive;
+          ">🏆 TOP 10 PLAYERS 🏆</div>
 
           <!-- Leaderboard -->
-          <div class="w-full max-w-sm">
-            <div class="text-white font-bold mb-3" style="font-size: 28px; text-shadow: 3px 3px 0px #000000;">
-              🏆 TOP 10 PLAYERS 🏆
-            </div>
-            <div class="game-3d-container-slot-[#2C3E50] p-3">
-              <div class="flex flex-col gap-2">
-                ${leaderboardHTML || '<div class="text-white" style="font-size: 18px;">No scores yet!</div>'}
-              </div>
-            </div>
+          <div style="
+            background: radial-gradient(500px 200px at 50% -20%, rgba(118,174,255,.08), transparent 60%), ${colors.ink};
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 24px;
+          ">
+            ${leaderboardHTML || '<div style="color: #fff; font-size: 18px; text-align: center;">No scores yet!</div>'}
           </div>
 
-          <!-- Tap to Retry Button -->
-          <button 
-            id="tap-retry-btn" 
-            class="game-3d-container-clickable-[#E74C3C] px-12 py-4 font-bold pointer-events-auto cursor-pointer mt-4"
+          <!-- Retry Button -->
+          <button
+            id="tap-retry-btn"
             style="
-              font-size: 32px;
-              text-shadow: 3px 3px 0px #000000;
-              color: white;
+              width: 100%;
+              padding: 20px;
+              font-size: 36px;
+              font-family: 'Luckiest Guy', cursive;
+              background: linear-gradient(135deg, #ff3333 0%, #cc0000 100%);
+              color: #fff;
+              border: 4px solid rgba(255,255,255,.3);
+              border-radius: 16px;
+              cursor: pointer;
+              box-shadow: 0 6px 20px rgba(255,51,51,.5);
               transition: all 0.2s ease;
+              text-shadow: 3px 3px 0px #000;
               animation: blink 1s ease-in-out infinite alternate;
+              margin-bottom: 16px;
             "
-            onmouseover="this.style.transform='scale(1.1)'; this.style.filter='brightness(1.2)';"
-            onmouseout="this.style.transform='scale(1)'; this.style.filter='brightness(1)';"
+            onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 8px 24px rgba(255,51,51,.7)';"
+            onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 6px 20px rgba(255,51,51,.5)';"
             onmousedown="this.style.transform='scale(0.95)';"
-            onmouseup="this.style.transform='scale(1.1)';"
-            ontouchstart="this.style.transform='scale(0.95)';"
-            ontouchend="this.style.transform='scale(1)';"
+            onmouseup="this.style.transform='scale(1.05)';"
           >
             TAP TO RETRY
+          </button>
+
+          <!-- Main Menu Button -->
+          <button
+            id="main-menu-btn"
+            style="
+              width: 100%;
+              padding: 16px;
+              font-size: 24px;
+              font-family: 'Luckiest Guy', cursive;
+              background: rgba(255,255,255,0.1);
+              color: #fff;
+              border: 3px solid rgba(255,255,255,.3);
+              border-radius: 12px;
+              cursor: pointer;
+              transition: all 0.2s ease;
+              text-shadow: 2px 2px 0px #000;
+            "
+            onmouseover="this.style.background='rgba(255,255,255,0.2)'; this.style.borderColor='${colors.gold}';"
+            onmouseout="this.style.background='rgba(255,255,255,0.1)'; this.style.borderColor='rgba(255,255,255,.3)';"
+          >
+            MAIN MENU
           </button>
 
         </div>
 
         <!-- Custom Animations -->
         <style>
-          @keyframes gameOverBounce {
-            0% { transform: scale(0.5); opacity: 0; }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); opacity: 1; }
+          @keyframes gameOverPulse {
+            from { transform: scale(1); }
+            to { transform: scale(1.05); }
           }
-          
+
           @keyframes blink {
-            from { opacity: 0.7; }
+            from { opacity: 0.8; }
             to { opacity: 1; }
           }
-          
+
           @keyframes sparkle {
-            from { 
+            from {
               filter: brightness(1);
               transform: scale(1);
             }
-            to { 
+            to {
               filter: brightness(1.3);
               transform: scale(1.05);
             }
           }
-          
+
           @keyframes starPop {
-            0% { 
+            0% {
               transform: scale(0) rotate(0deg);
               opacity: 0;
             }
             50% {
               transform: scale(1.3) rotate(180deg);
             }
-            100% { 
+            100% {
               transform: scale(1) rotate(360deg);
               opacity: 1;
             }
           }
-          
-          #tap-retry-btn:hover {
-            transform: scale(1.1);
-            filter: brightness(1.2);
+
+          input:focus {
+            border-color: ${colors.purple} !important;
+            box-shadow: 0 0 0 4px rgba(104, 12, 217, 0.3) !important;
           }
-          
-          #tap-retry-btn:active {
-            transform: scale(0.95);
+
+          @media (max-width: 600px) {
+            #game-over-container > div:first-child {
+              padding-top: 20px;
+            }
           }
         </style>
       </div>
@@ -290,7 +434,7 @@ export class GameOverUIScene extends Phaser.Scene {
   setupInputs(): void {
     // Clear previous event listeners
     this.input.off('pointerdown');
-    
+
     // Create keyboard input
     this.enterKey = this.input.keyboard?.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
     this.spaceKey = this.input.keyboard?.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
@@ -305,21 +449,15 @@ export class GameOverUIScene extends Phaser.Scene {
       });
     }
 
-    // Listen for mouse/touch click events anywhere on screen (as fallback)
-    this.input.on('pointerdown', (pointer: Phaser.Input.Pointer) => {
-      // Only restart if not clicking on input, buttons, or leaderboard area
-      const target = pointer.event?.target as HTMLElement;
-      if (target && (
-        target.id === 'player-name-input' || 
-        target.id === 'submit-name-btn' || 
-        target.id === 'tap-retry-btn' ||
-        target.tagName === 'BUTTON' ||
-        target.tagName === 'INPUT'
-      )) {
-        return; // Don't restart when interacting with UI elements
-      }
-      this.returnToTitle();
-    });
+    // Setup main menu button click handler
+    const menuBtn = document.getElementById('main-menu-btn');
+    if (menuBtn) {
+      menuBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        this.returnToTitle();
+      });
+    }
 
     // Listen for key events
     this.enterKey?.on('down', () => {
