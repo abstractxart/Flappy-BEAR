@@ -7,6 +7,7 @@ interface LeaderboardEntry {
   score: number;
   coins: number;
   date: string;
+  avatar?: string; // Profile photo URL
 }
 
 /**
@@ -164,6 +165,9 @@ export class GameOverUIScene extends Phaser.Scene {
             ? 'linear-gradient(135deg, rgba(205, 127, 50, 0.2) 0%, rgba(184, 115, 51, 0.15) 100%)'
             : 'linear-gradient(135deg, rgba(104, 12, 217, 0.15) 0%, rgba(7, 174, 8, 0.15) 100%)'));
 
+      // Avatar URL with fallback
+      const avatarUrl = entry.avatar || 'https://files.catbox.moe/25ekkd.png';
+
       return `
         <div style="
           display: flex;
@@ -180,6 +184,7 @@ export class GameOverUIScene extends Phaser.Scene {
           <div style="font-size: 18px; color: ${colors.gold}; text-shadow: 1px 1px 0px #000; min-width: 36px;">
             ${medal || `#${index + 1}`}
           </div>
+          <img src="${avatarUrl}" alt="${entry.name}" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid ${colors.gold}; margin: 0 8px;" onerror="this.src='https://files.catbox.moe/25ekkd.png'">
           <div style="font-size: 16px; color: #fff; text-shadow: 1px 1px 0px #000; flex: 1; margin: 0 10px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
             ${entry.name}
           </div>
@@ -601,7 +606,8 @@ export class GameOverUIScene extends Phaser.Scene {
             name: displayName,
             score: entry.score,
             coins: entry.metadata?.coins || 0,
-            date: entry.created_at || new Date().toISOString()
+            date: entry.created_at || new Date().toISOString(),
+            avatar: entry.avatar_nft || 'https://files.catbox.moe/25ekkd.png' // BEAR logo as default
           };
         });
         console.log('✅ Loaded BEAR Park central leaderboard:', this.leaderboard);
