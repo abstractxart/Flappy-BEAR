@@ -3,7 +3,7 @@
  * Submits scores to central bearpark.xyz leaderboard
  */
 
-const BEAR_API_URL = 'https://bearpark.xyz/api';
+const BEAR_API_URL = 'https://www.bearpark.xyz/api';
 const GAME_ID = 'flappy-bear';
 
 export interface ScoreSubmissionResult {
