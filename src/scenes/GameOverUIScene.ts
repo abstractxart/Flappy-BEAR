@@ -173,12 +173,12 @@ export class GameOverUIScene extends Phaser.Scene {
         left: 0;
         right: 0;
         bottom: 0;
-        width: 100vw;
-        height: 100vh;
-        min-height: 100vh;
+        width: 100%;
+        height: 100%;
         background: linear-gradient(180deg, ${colors.charcoal} 0%, ${colors.ink} 100%);
         z-index: 999999;
-        overflow-y: scroll;
+        overflow-x: hidden;
+        overflow-y: auto;
         -webkit-overflow-scrolling: touch;
         font-family: 'Luckiest Guy', cursive;
         pointer-events: auto;
@@ -186,9 +186,11 @@ export class GameOverUIScene extends Phaser.Scene {
       ">
         <div style="
           max-width: 600px;
+          width: 100%;
           margin: 0 auto;
           padding: 40px 20px;
           padding-bottom: calc(160px + env(safe-area-inset-bottom));
+          box-sizing: border-box;
         ">
 
           <!-- Game Over Title -->
