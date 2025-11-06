@@ -60,12 +60,23 @@ export class GameOverUIScene extends Phaser.Scene {
   }
 
   async create(): Promise<void> {
+    console.log('🔍 [DEBUG] === GameOverUIScene.create() called ===');
+    console.log('🔍 [DEBUG] Score:', this.score, 'Best:', this.bestScore);
+    console.log('🔍 [DEBUG] Authentication status:', BEARParkAPI.isAuthenticated());
+    console.log('🔍 [DEBUG] Wallet:', BEARParkAPI.getWalletAddress());
+    console.log('🔍 [DEBUG] Display name:', BEARParkAPI.getCurrentUserDisplayName());
+
     // Wait for leaderboard to load before creating UI
     await this.loadLeaderboard();
+    console.log('🔍 [DEBUG] Leaderboard loaded, creating UI...');
+
     // Create DOM UI
     this.createDOMUI();
+    console.log('🔍 [DEBUG] DOM UI created');
+
     // Setup input controls
     this.setupInputs();
+    console.log('🔍 [DEBUG] Inputs setup complete');
 
     // Auto-submit score if user is authenticated with BEAR Park
     if (BEARParkAPI.isAuthenticated()) {
@@ -73,6 +84,8 @@ export class GameOverUIScene extends Phaser.Scene {
       console.log(`🔐 User authenticated as: ${displayName} - auto-submitting score`);
       // Auto-submit the score immediately
       this.submitScore(displayName);
+    } else {
+      console.log('ℹ️ [DEBUG] User not authenticated - showing name entry form');
     }
   }
   
@@ -113,6 +126,9 @@ export class GameOverUIScene extends Phaser.Scene {
   }
 
   createDOMUI(): void {
+    console.log('🔍 [DEBUG] createDOMUI called');
+    console.log('🔍 [DEBUG] this.leaderboard before rendering:', this.leaderboard);
+
     // BEAR Park Theme Colors
     const colors = {
       gold: '#edb723',
@@ -135,6 +151,7 @@ export class GameOverUIScene extends Phaser.Scene {
       : '';
 
     // Generate leaderboard HTML with BEAR Park style (top 5 only)
+    console.log('🔍 [DEBUG] Generating leaderboard HTML from', this.leaderboard.length, 'entries');
     const leaderboardHTML = this.leaderboard.slice(0, 5).map((entry, index) => {
       const medal = index === 0 ? '🥇' : (index === 1 ? '🥈' : (index === 2 ? '🥉' : ''));
       const borderColor = index === 0 ? '#FFD700' : (index === 1 ? '#C0C0C0' : (index === 2 ? '#CD7F32' : colors.gold));
@@ -172,6 +189,9 @@ export class GameOverUIScene extends Phaser.Scene {
         </div>
       `;
     }).join('');
+
+    console.log('🔍 [DEBUG] Generated leaderboard HTML length:', leaderboardHTML.length);
+    console.log('🔍 [DEBUG] Leaderboard HTML preview:', leaderboardHTML.substring(0, 200));
 
     const uiHTML = `
       <div id="game-over-container" style="
@@ -565,8 +585,11 @@ export class GameOverUIScene extends Phaser.Scene {
 
   async loadLeaderboard(): Promise<void> {
     // Fetch leaderboard from BEAR Park central API
+    console.log('🔍 [DEBUG] Loading leaderboard from BEAR Park API...');
     try {
       const centralLeaderboard = await BEARParkAPI.getLeaderboard(10);
+      console.log('🔍 [DEBUG] Central leaderboard response:', centralLeaderboard);
+      console.log('🔍 [DEBUG] Central leaderboard length:', centralLeaderboard?.length);
 
       if (centralLeaderboard && centralLeaderboard.length > 0) {
         // Transform central leaderboard entries to match local format
@@ -576,31 +599,41 @@ export class GameOverUIScene extends Phaser.Scene {
           coins: entry.metadata?.coins || 0,
           date: entry.created_at || new Date().toISOString()
         }));
-        console.log('✅ Loaded BEAR Park central leaderboard');
+        console.log('✅ Loaded BEAR Park central leaderboard:', this.leaderboard);
       } else {
+        console.log('⚠️ [DEBUG] Central leaderboard is empty, using local fallback');
         // Fallback to local leaderboard if central API fails or is empty
         const saved = localStorage.getItem('flappyBearLeaderboard');
         if (saved) {
           this.leaderboard = JSON.parse(saved);
-          console.log('ℹ️ Using local leaderboard as fallback');
+          console.log('ℹ️ Using local leaderboard as fallback:', this.leaderboard);
         } else {
           this.leaderboard = [];
+          console.log('⚠️ [DEBUG] No local leaderboard found - leaderboard is empty');
         }
       }
     } catch (error) {
-      console.error('Error loading central leaderboard, using local:', error);
+      console.error('❌ [DEBUG] Error loading central leaderboard:', error);
       // Fallback to local leaderboard
       const saved = localStorage.getItem('flappyBearLeaderboard');
       if (saved) {
         this.leaderboard = JSON.parse(saved);
+        console.log('ℹ️ Using local leaderboard as fallback after error:', this.leaderboard);
       } else {
         this.leaderboard = [];
+        console.log('⚠️ [DEBUG] No local leaderboard found after error');
       }
     }
+    console.log('🔍 [DEBUG] Final leaderboard state:', this.leaderboard);
   }
 
   async submitScore(name: string): Promise<void> {
     if (this.nameSubmitted) return;
+
+    console.log('🔍 [DEBUG] submitScore called with name:', name);
+    console.log('🔍 [DEBUG] Score:', this.score, 'Coins:', this.coinsCollected);
+    console.log('🔍 [DEBUG] Is authenticated:', BEARParkAPI.isAuthenticated());
+    console.log('🔍 [DEBUG] Wallet address:', BEARParkAPI.getWalletAddress());
 
     this.nameSubmitted = true;
     this.playerName = name;
@@ -619,31 +652,41 @@ export class GameOverUIScene extends Phaser.Scene {
     localLeaderboard.push(newEntry);
     localLeaderboard.sort((a, b) => b.score - a.score);
     localStorage.setItem('flappyBearLeaderboard', JSON.stringify(localLeaderboard.slice(0, 10)));
+    console.log('🔍 [DEBUG] Saved to local leaderboard:', localLeaderboard.slice(0, 10));
 
     // Submit score to BEAR Park central leaderboard
     try {
+      console.log('🔍 [DEBUG] Submitting score to BEAR Park API...');
       const result = await BEARParkAPI.submitScore(this.score, {
         coins: this.coinsCollected,
         player_name: name
       });
+      console.log('🔍 [DEBUG] Submit score result:', result);
 
       if (result.success && result.is_high_score) {
         console.log('🎉 New BEAR Park high score!');
+      } else if (result.success) {
+        console.log('✅ Score submitted successfully (not a high score)');
+      } else {
+        console.log('⚠️ [DEBUG] Score submission returned success: false');
       }
 
       // Reload leaderboard from central API to show updated rankings
+      console.log('🔍 [DEBUG] Reloading leaderboard after submission...');
       await this.loadLeaderboard();
 
       // For authenticated users, we need to update the UI to show the new leaderboard
       if (BEARParkAPI.isAuthenticated()) {
+        console.log('🔍 [DEBUG] Recreating UI for authenticated user...');
         if (this.uiContainer) {
           this.uiContainer.destroy();
         }
         this.createDOMUI();
         this.setupInputs();
+        console.log('🔍 [DEBUG] UI recreated successfully');
       }
     } catch (error) {
-      console.error('Error submitting to BEAR Park:', error);
+      console.error('❌ [DEBUG] Error submitting to BEAR Park:', error);
       // If submission fails, add to local leaderboard
       this.leaderboard.push(newEntry);
       this.leaderboard.sort((a, b) => b.score - a.score);

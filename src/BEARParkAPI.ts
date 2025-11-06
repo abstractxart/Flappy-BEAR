@@ -77,6 +77,11 @@ export class BEARParkAPI {
   ): Promise<ScoreSubmissionResult> {
     const walletAddress = this.getWalletAddress();
 
+    console.log('🔍 [API DEBUG] submitScore called');
+    console.log('🔍 [API DEBUG] Wallet address:', walletAddress);
+    console.log('🔍 [API DEBUG] Score:', score);
+    console.log('🔍 [API DEBUG] Metadata:', metadata);
+
     if (!walletAddress) {
       console.log('ℹ️ Score not submitted - user not authenticated with XAMAN wallet');
       return {
@@ -87,36 +92,46 @@ export class BEARParkAPI {
     }
 
     try {
-      console.log(`📤 Submitting score to BEAR Park: ${score}`);
+      const payload = {
+        wallet_address: walletAddress,
+        game_id: GAME_ID,
+        score: score,
+        metadata: {
+          ...metadata,
+          timestamp: new Date().toISOString(),
+          display_name: this.getDisplayName()
+        }
+      };
+
+      console.log(`📤 Submitting score to BEAR Park API...`);
+      console.log('🔍 [API DEBUG] POST URL:', `${BEAR_API_URL}/leaderboard`);
+      console.log('🔍 [API DEBUG] Payload:', JSON.stringify(payload, null, 2));
 
       const response = await fetch(`${BEAR_API_URL}/leaderboard`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-          wallet_address: walletAddress,
-          game_id: GAME_ID,
-          score: score,
-          metadata: {
-            ...metadata,
-            timestamp: new Date().toISOString(),
-            display_name: this.getDisplayName()
-          }
-        })
+        body: JSON.stringify(payload)
       });
 
+      console.log('🔍 [API DEBUG] Response status:', response.status);
+      console.log('🔍 [API DEBUG] Response headers:', Object.fromEntries(response.headers.entries()));
+
       const data = await response.json();
+      console.log('🔍 [API DEBUG] Response data:', data);
 
       if (data.success && data.is_high_score) {
         console.log('🎉 NEW BEAR PARK HIGH SCORE!', score);
       } else if (data.success) {
         console.log('✅ Score submitted to BEAR Park (not a high score)');
+      } else {
+        console.log('⚠️ [API DEBUG] Server returned success: false');
       }
 
       return data;
     } catch (error) {
-      console.error('❌ Error submitting score to BEAR Park:', error);
+      console.error('❌ [API DEBUG] Error submitting score to BEAR Park:', error);
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Unknown error'
@@ -131,11 +146,19 @@ export class BEARParkAPI {
    */
   static async getLeaderboard(limit: number = 10): Promise<any[]> {
     try {
-      const response = await fetch(`${BEAR_API_URL}/leaderboard/${GAME_ID}?limit=${limit}`);
+      const url = `${BEAR_API_URL}/leaderboard/${GAME_ID}?limit=${limit}`;
+      console.log('🔍 [API DEBUG] Fetching leaderboard from:', url);
+
+      const response = await fetch(url);
+      console.log('🔍 [API DEBUG] Leaderboard response status:', response.status);
+
       const data = await response.json();
+      console.log('🔍 [API DEBUG] Leaderboard response data:', data);
+      console.log('🔍 [API DEBUG] Leaderboard entries:', data.leaderboard?.length || 0);
+
       return data.leaderboard || [];
     } catch (error) {
-      console.error('❌ Error fetching BEAR Park leaderboard:', error);
+      console.error('❌ [API DEBUG] Error fetching BEAR Park leaderboard:', error);
       return [];
     }
   }
