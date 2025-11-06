@@ -377,7 +377,7 @@ export class GameOverUIScene extends Phaser.Scene {
             max-height: 140px;
             overflow-y: auto;
           ">
-            ${leaderboardHTML.slice(0, 5) || '<div style="color: #fff; font-size: 14px; text-align: center;">No scores yet!</div>'}
+            ${leaderboardHTML || '<div style="color: #fff; font-size: 14px; text-align: center;">No scores yet!</div>'}
           </div>
 
           <!-- Retry Button -->
