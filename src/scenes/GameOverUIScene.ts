@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import * as utils from '../utils';
+import { BEARParkAPI } from '../BEARParkAPI';
 
 interface LeaderboardEntry {
   name: string;
@@ -412,7 +413,19 @@ export class GameOverUIScene extends Phaser.Scene {
     
     // Save to localStorage
     localStorage.setItem('flappyBearLeaderboard', JSON.stringify(this.leaderboard));
-    
+
+    // Submit score to BEAR Park central leaderboard
+    BEARParkAPI.submitScore(this.score, {
+      coins: this.coinsCollected,
+      player_name: name
+    }).then(result => {
+      if (result.success && result.is_high_score) {
+        console.log('🎉 New BEAR Park high score!');
+      }
+    }).catch(error => {
+      console.error('Error submitting to BEAR Park:', error);
+    });
+
     // Play UI click sound
     this.sound.play("ui_click", { volume: 0.3 });
     
