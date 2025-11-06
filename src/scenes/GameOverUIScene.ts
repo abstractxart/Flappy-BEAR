@@ -593,12 +593,17 @@ export class GameOverUIScene extends Phaser.Scene {
 
       if (centralLeaderboard && centralLeaderboard.length > 0) {
         // Transform central leaderboard entries to match local format
-        this.leaderboard = centralLeaderboard.map(entry => ({
-          name: BEARParkAPI.formatDisplayName(entry),
-          score: entry.score,
-          coins: entry.metadata?.coins || 0,
-          date: entry.created_at || new Date().toISOString()
-        }));
+        console.log('🔍 [DEBUG] Raw central leaderboard entries:', JSON.stringify(centralLeaderboard, null, 2));
+        this.leaderboard = centralLeaderboard.map(entry => {
+          const displayName = BEARParkAPI.formatDisplayName(entry);
+          console.log('🔍 [DEBUG] Entry:', entry, 'Display name:', displayName);
+          return {
+            name: displayName,
+            score: entry.score,
+            coins: entry.metadata?.coins || 0,
+            date: entry.created_at || new Date().toISOString()
+          };
+        });
         console.log('✅ Loaded BEAR Park central leaderboard:', this.leaderboard);
       } else {
         console.log('⚠️ [DEBUG] Central leaderboard is empty, using local fallback');
