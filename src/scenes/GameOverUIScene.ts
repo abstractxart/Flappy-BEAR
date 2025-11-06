@@ -633,6 +633,15 @@ export class GameOverUIScene extends Phaser.Scene {
 
       // Reload leaderboard from central API to show updated rankings
       await this.loadLeaderboard();
+
+      // For authenticated users, we need to update the UI to show the new leaderboard
+      if (BEARParkAPI.isAuthenticated()) {
+        if (this.uiContainer) {
+          this.uiContainer.destroy();
+        }
+        this.createDOMUI();
+        this.setupInputs();
+      }
     } catch (error) {
       console.error('Error submitting to BEAR Park:', error);
       // If submission fails, add to local leaderboard
@@ -641,7 +650,7 @@ export class GameOverUIScene extends Phaser.Scene {
       this.leaderboard = this.leaderboard.slice(0, 10);
     }
 
-    // Play UI click sound (only if not auto-submitted at create)
+    // Play UI click sound (only if manual submission)
     if (!BEARParkAPI.isAuthenticated()) {
       this.sound.play("ui_click", { volume: 0.3 });
     }
@@ -652,8 +661,7 @@ export class GameOverUIScene extends Phaser.Scene {
       nameContainer.style.display = 'none';
     }
 
-    // Only recreate UI if not authenticated (manual submission)
-    // For authenticated users, UI was just created and doesn't need recreation
+    // Recreate UI for manual submissions to show updated leaderboard
     if (!BEARParkAPI.isAuthenticated()) {
       if (this.uiContainer) {
         this.uiContainer.destroy();
