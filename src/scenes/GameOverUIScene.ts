@@ -602,12 +602,26 @@ export class GameOverUIScene extends Phaser.Scene {
         this.leaderboard = centralLeaderboard.map(entry => {
           const displayName = BEARParkAPI.formatDisplayName(entry);
           console.log('🔍 [DEBUG] Entry:', entry, 'Display name:', displayName);
+
+          // Parse avatar_nft JSON to get imageUrl
+          let avatarUrl = 'https://files.catbox.moe/25ekkd.png'; // Default BEAR logo
+          if (entry.avatar_nft) {
+            try {
+              const avatarData = typeof entry.avatar_nft === 'string' ? JSON.parse(entry.avatar_nft) : entry.avatar_nft;
+              if (avatarData.imageUrl) {
+                avatarUrl = avatarData.imageUrl;
+              }
+            } catch (e) {
+              console.warn('Failed to parse avatar_nft for', displayName, e);
+            }
+          }
+
           return {
             name: displayName,
             score: entry.score,
             coins: entry.metadata?.coins || 0,
             date: entry.created_at || new Date().toISOString(),
-            avatar: entry.avatar_nft || 'https://files.catbox.moe/25ekkd.png' // BEAR logo as default
+            avatar: avatarUrl
           };
         });
         console.log('✅ Loaded BEAR Park central leaderboard:', this.leaderboard);
