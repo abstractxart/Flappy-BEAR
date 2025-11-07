@@ -24,6 +24,9 @@ const config: Phaser.Types.Core.GameConfig = {
   scale: {
     mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH,
+    width: screenSize.width.value,
+    height: screenSize.height.value,
+    fullscreenTarget: 'game-container',
   },
   physics: {
     default: "arcade",
@@ -36,6 +39,10 @@ const config: Phaser.Types.Core.GameConfig = {
     },
   },
   pixelArt: renderConfig.pixelArt.value,
+  input: {
+    // Prevent canvas from interfering with DOM UI elements
+    windowEvents: true,
+  }
 };
 
 const game = new Phaser.Game(config);

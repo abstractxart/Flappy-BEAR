@@ -67,6 +67,13 @@ export class GameOverUIScene extends Phaser.Scene {
     console.log('🔍 [DEBUG] Wallet:', BEARParkAPI.getWalletAddress());
     console.log('🔍 [DEBUG] Display name:', BEARParkAPI.getCurrentUserDisplayName());
 
+    // CRITICAL: Disable Phaser canvas input to prevent it from blocking DOM UI on mobile
+    if (this.game.canvas) {
+      this.game.canvas.style.pointerEvents = 'none';
+      this.game.canvas.style.touchAction = 'none';
+      console.log('🔍 [DEBUG] Canvas input disabled for Game Over screen');
+    }
+
     // Wait for leaderboard to load before creating UI
     await this.loadLeaderboard();
     console.log('🔍 [DEBUG] Leaderboard loaded, creating UI...');
@@ -82,7 +89,7 @@ export class GameOverUIScene extends Phaser.Scene {
     // Auto-submit score if user is authenticated with BEAR Park
     if (BEARParkAPI.isAuthenticated()) {
       const displayName = BEARParkAPI.getCurrentUserDisplayName();
-      console.log(`🔐 User authenticated as: ${displayName} - auto-submitting score`);
+      console.log('🔐 User authenticated as: ${displayName} - auto-submitting score');
       // Auto-submit the score immediately
       this.submitScore(displayName);
     } else {
@@ -743,7 +750,7 @@ export class GameOverUIScene extends Phaser.Scene {
     // Prevent multiple triggers
     if (this.isRestarting) return;
     this.isRestarting = true;
-    
+
     // Play UI click sound
     this.sound.play("ui_click", { volume: 0.3 });
 
@@ -753,14 +760,21 @@ export class GameOverUIScene extends Phaser.Scene {
     import('./GameScene').then((module) => {
       module.default.aggressiveClearBossBonuses();
     });
-    
+
     // Also clear the old way for IMMEDIATE safety
     localStorage.removeItem("flappyBearSpeedMultiplier");
     localStorage.removeItem("flappyBearAccumulatedScore");
     sessionStorage.removeItem("flappyBearSpeedMultiplier");
     sessionStorage.removeItem("flappyBearAccumulatedScore");
-    
+
     console.log("💥 ULTRA AGGRESSIVE CLEAR: All boss bonuses ELIMINATED after death");
+
+    // CRITICAL: Re-enable canvas input for gameplay
+    if (this.game.canvas) {
+      this.game.canvas.style.pointerEvents = 'auto';
+      this.game.canvas.style.touchAction = 'auto';
+      console.log('🔍 [DEBUG] Canvas input re-enabled for gameplay');
+    }
 
     // DON'T stop background music - let it continue playing!
     // Music is managed globally by MusicManager
@@ -777,7 +791,7 @@ export class GameOverUIScene extends Phaser.Scene {
     // Stop all game-related scenes
     this.scene.stop("UIScene");
     this.scene.stop(this.currentLevelKey!);
-    
+
     // Return to title screen
     this.scene.start("TitleScreen");
   }
