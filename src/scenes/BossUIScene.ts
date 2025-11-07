@@ -535,12 +535,12 @@ export class BossUIScene extends Phaser.Scene {
 
   shutdown(): void {
     console.log("🧹 BOSS UI SCENE SHUTDOWN");
-    
+
     // Stop UI update timer
     if (this.uiUpdateTimer) {
       this.uiUpdateTimer.destroy();
     }
-    
+
     // Clean up event listeners
     if (this.uiContainer && this.uiContainer.node) {
       const missileButton = this.uiContainer.node.querySelector("#missile-button");
@@ -550,18 +550,25 @@ export class BossUIScene extends Phaser.Scene {
         missileButton.removeEventListener("touchend", handler);
         console.log("🧹 Missile button event listeners cleaned up");
       }
-      
+
       const pauseButton = this.uiContainer.node.querySelector("#pause-button");
       if (pauseButton) {
         pauseButton.removeEventListener("click", () => {});
       }
-      
+
       const muteButton = this.uiContainer.node.querySelector("#mute-button");
       if (muteButton) {
         muteButton.removeEventListener("click", () => {});
       }
     }
-    
+
+    // CRITICAL: Destroy the DOM element to prevent it from blocking GameOverUIScene
+    if (this.uiContainer) {
+      console.log("🧹 Destroying BossUIScene DOM element");
+      this.uiContainer.destroy();
+      this.uiContainer = null;
+    }
+
     console.log("✅ BOSS UI SCENE CLEANUP COMPLETE");
   }
 }

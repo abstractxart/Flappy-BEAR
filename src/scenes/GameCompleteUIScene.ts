@@ -157,4 +157,13 @@ export class GameCompleteUIScene extends Phaser.Scene {
   update(): void {
     // Game Complete UI scene doesn't need special update logic
   }
+
+  shutdown(): void {
+    // CRITICAL: Destroy the DOM element to prevent it from blocking other UI scenes
+    if (this.uiContainer) {
+      console.log("🧹 Destroying GameCompleteUIScene DOM element");
+      this.uiContainer.destroy();
+      this.uiContainer = null;
+    }
+  }
 }

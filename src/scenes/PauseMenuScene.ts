@@ -340,4 +340,13 @@ export default class PauseMenuScene extends Phaser.Scene {
     // Go to title screen
     this.scene.start("TitleScreen");
   }
+
+  shutdown(): void {
+    // CRITICAL: Destroy the DOM element to prevent it from blocking other UI scenes
+    if (this.uiContainer) {
+      console.log("🧹 Destroying PauseMenuScene DOM element");
+      this.uiContainer.destroy();
+      this.uiContainer = null;
+    }
+  }
 }

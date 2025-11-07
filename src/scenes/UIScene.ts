@@ -642,6 +642,13 @@ export default class UIScene extends Phaser.Scene {
       clearInterval(this.powerUpTimerInterval);
       this.powerUpTimerInterval = null;
     }
+
+    // CRITICAL: Destroy the DOM element to prevent it from blocking other UI scenes
+    if (this.uiContainer) {
+      console.log("🧹 Destroying UIScene DOM element");
+      this.uiContainer.destroy();
+      this.uiContainer = null;
+    }
   }
 }
 
