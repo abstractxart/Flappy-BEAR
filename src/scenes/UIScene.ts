@@ -108,7 +108,7 @@ export default class UIScene extends Phaser.Scene {
     const uiHTML = `
       <div id="game-ui-container" class="fixed top-0 left-0 w-full h-full pointer-events-none z-[1000] font-supercell">
         <!-- Top HUD -->
-        <div class="flex justify-between items-start p-8 gap-4">
+        <div class="flex justify-between items-start px-8 pb-8 pt-2 gap-4">
           <!-- Left Side - Token Stats -->
           <div class="flex flex-col gap-3">
             <!-- XRP Tokens -->
