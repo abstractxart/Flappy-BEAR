@@ -22,6 +22,7 @@ export class SecondBossLevelScene extends Phaser.Scene {
   gameStarted: boolean = false;
   gameOver: boolean = false;
   bossDefeated: boolean = false;
+  private isTransitioningToGameOver: boolean = false; // Prevent multiple scene launches
   
   // Missile system
   lastMissileTime: number = 0;
@@ -41,6 +42,7 @@ export class SecondBossLevelScene extends Phaser.Scene {
     this.gameStarted = false;
     this.gameOver = false;
     this.bossDefeated = false;
+    this.isTransitioningToGameOver = false; // Reset transition flag
     this.lastMissileTime = 0;
     
     console.log("Second Boss Level Scene created");
@@ -478,8 +480,14 @@ export class SecondBossLevelScene extends Phaser.Scene {
   }
 
   handleGameOver(): void {
-    // FORCE game over - remove guard to allow multiple calls
-    console.log("🎮 FORCE GAME OVER - Second Boss fight failed! (gameOver was: " + this.gameOver + ")");
+    // CRITICAL: Prevent multiple scene launches
+    if (this.isTransitioningToGameOver) {
+      console.log("⚠️ Already transitioning to game over, ignoring duplicate call");
+      return;
+    }
+
+    console.log("🎮 GAME OVER - Second Boss fight failed! Setting transition flag");
+    this.isTransitioningToGameOver = true;
     this.gameOver = true;
 
     // Stop boss music
@@ -659,6 +667,7 @@ export class SecondBossLevelScene extends Phaser.Scene {
     this.gameStarted = false;
     this.gameOver = false;
     this.bossDefeated = false;
+    this.isTransitioningToGameOver = false;
     this.lastMissileTime = 0;
     
     console.log("✅ SECOND BOSS SCENE CLEANUP COMPLETE");

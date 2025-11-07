@@ -18,6 +18,7 @@ export class BossLevelScene extends Phaser.Scene {
   public gameStarted: boolean = false;
   public gameOver: boolean = false;
   public bossDefeated: boolean = false;
+  private isTransitioningToGameOver: boolean = false; // Prevent multiple scene launches
   
   // Input
   public spaceKey?: Phaser.Input.Keyboard.Key;
@@ -46,6 +47,7 @@ export class BossLevelScene extends Phaser.Scene {
     this.gameStarted = false;
     this.gameOver = false;
     this.bossDefeated = false;
+    this.isTransitioningToGameOver = false; // Reset transition flag
     this.lastMissileTime = 0;
     this.backgrounds = [];
     
@@ -488,8 +490,14 @@ export class BossLevelScene extends Phaser.Scene {
   }
 
   handleGameOver(): void {
-    // FORCE game over - remove guard to allow multiple calls
-    console.log("🎮 FORCE GAME OVER - Boss fight failed! (gameOver was: " + this.gameOver + ")");
+    // CRITICAL: Prevent multiple scene launches
+    if (this.isTransitioningToGameOver) {
+      console.log("⚠️ Already transitioning to game over, ignoring duplicate call");
+      return;
+    }
+
+    console.log("🎮 GAME OVER - Boss fight failed! Setting transition flag");
+    this.isTransitioningToGameOver = true;
     this.gameOver = true;
 
     // Stop boss music
@@ -669,6 +677,7 @@ export class BossLevelScene extends Phaser.Scene {
     this.gameStarted = false;
     this.gameOver = false;
     this.bossDefeated = false;
+    this.isTransitioningToGameOver = false;
     this.lastMissileTime = 0;
     
     console.log("✅ BOSS SCENE CLEANUP COMPLETE");
