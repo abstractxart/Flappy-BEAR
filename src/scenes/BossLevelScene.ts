@@ -491,32 +491,47 @@ export class BossLevelScene extends Phaser.Scene {
     // FORCE game over - remove guard to allow multiple calls
     console.log("🎮 FORCE GAME OVER - Boss fight failed! (gameOver was: " + this.gameOver + ")");
     this.gameOver = true;
-    
+
     // Stop boss music
     this.musicManager.stop();
     this.musicManager.play();
-    
+
+    // CRITICAL: Manually remove BossUIScene DOM before stopping scene
+    const bossUIScene = this.scene.get("BossUIScene") as any;
+    if (bossUIScene && bossUIScene.uiContainer) {
+      console.log("🧹 EMERGENCY: Manually destroying BossUIScene DOM");
+      bossUIScene.uiContainer.destroy();
+      bossUIScene.uiContainer = null;
+    }
+
     // AGGRESSIVELY stop boss UI scene - try multiple methods
     console.log("🛑 STOPPING BossUIScene");
     if (this.scene.isActive("BossUIScene")) {
       this.scene.stop("BossUIScene");
     }
-    
+
+    // CRITICAL: Disable canvas input immediately to prevent blocking
+    if (this.game.canvas) {
+      this.game.canvas.style.pointerEvents = 'none';
+      this.game.canvas.style.touchAction = 'none';
+      console.log("🔒 Canvas input disabled before GameOver");
+    }
+
     // Get current score from main game scene if available
     const mainGameScene = this.scene.get("GameScene") as any;
     const currentScore = mainGameScene?.score || 0;
     const coinsCollected = mainGameScene?.coinsCollected || 0;
     const bestScore = parseInt(localStorage.getItem("flappyBearBestScore") || "0");
     const isNewHighScore = currentScore > bestScore;
-    
+
     // Update best score if needed
     if (isNewHighScore) {
       localStorage.setItem("flappyBearBestScore", currentScore.toString());
       console.log("New high score saved:", currentScore);
     }
-    
+
     console.log("🚀 LAUNCHING GameOverUIScene with score:", currentScore);
-    
+
     // IMMEDIATELY stop current boss scene and launch game over scene
     this.scene.start("GameOverUIScene", {
       currentLevelKey: "GameScene", // Return to main game scene
