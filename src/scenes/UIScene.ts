@@ -108,44 +108,44 @@ export default class UIScene extends Phaser.Scene {
     const uiHTML = `
       <div id="game-ui-container" class="fixed top-0 left-0 w-full h-full pointer-events-none z-[1000] font-supercell">
         <!-- Top HUD -->
-        <div class="flex justify-between items-start px-8 pb-8 pt-2 gap-4">
+        <div class="flex justify-between items-start px-4 pb-8 pt-0 gap-2">
           <!-- Left Side - Token Stats -->
-          <div class="flex flex-col gap-3">
+          <div class="flex flex-col gap-1">
             <!-- XRP Tokens -->
-            <div class="game-3d-container-[#6B46C1] px-4 py-2 flex items-center gap-2" style="min-width: 180px;">
-              <div class="text-white font-bold" style="font-size: 20px; text-shadow: 2px 2px 0px rgba(0,0,0,0.5);">
+            <div class="game-3d-container-[#6B46C1] px-3 py-1 flex items-center gap-2" style="min-width: 160px;">
+              <div class="text-white font-bold" style="font-size: 18px; text-shadow: 2px 2px 0px rgba(0,0,0,0.5);">
                 XRP:
               </div>
-              <div id="xrp-count-display" class="text-yellow-300 font-bold" style="font-size: 20px; text-shadow: 2px 2px 0px rgba(0,0,0,0.5);">
+              <div id="xrp-count-display" class="text-yellow-300 font-bold" style="font-size: 18px; text-shadow: 2px 2px 0px rgba(0,0,0,0.5);">
                 0
               </div>
-              <div class="text-gray-300 font-bold" style="font-size: 16px; text-shadow: 1px 1px 0px rgba(0,0,0,0.5);">
+              <div class="text-gray-300 font-bold" style="font-size: 14px; text-shadow: 1px 1px 0px rgba(0,0,0,0.5);">
                 (<span id="xrp-points-display">0</span>pts)
               </div>
             </div>
-            
+
             <!-- Golden Bear Tokens -->
-            <div class="game-3d-container-[#FFD700] px-4 py-2 flex items-center gap-2" style="min-width: 180px;">
-              <div class="text-amber-900 font-bold" style="font-size: 20px; text-shadow: 1px 1px 0px rgba(255,255,255,0.3);">
+            <div class="game-3d-container-[#FFD700] px-3 py-1 flex items-center gap-2" style="min-width: 160px;">
+              <div class="text-amber-900 font-bold" style="font-size: 18px; text-shadow: 1px 1px 0px rgba(255,255,255,0.3);">
                 🐻:
               </div>
-              <div id="golden-count-display" class="text-amber-900 font-bold" style="font-size: 20px; text-shadow: 1px 1px 0px rgba(255,255,255,0.3);">
+              <div id="golden-count-display" class="text-amber-900 font-bold" style="font-size: 18px; text-shadow: 1px 1px 0px rgba(255,255,255,0.3);">
                 0
               </div>
-              <div class="text-amber-800 font-bold" style="font-size: 16px; text-shadow: 1px 1px 0px rgba(255,255,255,0.2);">
+              <div class="text-amber-800 font-bold" style="font-size: 14px; text-shadow: 1px 1px 0px rgba(255,255,255,0.2);">
                 (<span id="golden-points-display">0</span>pts)
               </div>
             </div>
-            
+
             <!-- Pipes Passed -->
-            <div class="game-3d-container-[#4A5568] px-4 py-2 flex items-center gap-2" style="min-width: 180px;">
-              <div class="text-orange-300 font-bold" style="font-size: 20px; text-shadow: 2px 2px 0px rgba(0,0,0,0.5);">
+            <div class="game-3d-container-[#4A5568] px-3 py-1 flex items-center gap-2" style="min-width: 160px;">
+              <div class="text-orange-300 font-bold" style="font-size: 18px; text-shadow: 2px 2px 0px rgba(0,0,0,0.5);">
                 ⚡:
               </div>
-              <div id="pipes-count-display" class="text-white font-bold" style="font-size: 20px; text-shadow: 2px 2px 0px rgba(0,0,0,0.5);">
+              <div id="pipes-count-display" class="text-white font-bold" style="font-size: 18px; text-shadow: 2px 2px 0px rgba(0,0,0,0.5);">
                 0
               </div>
-              <div class="text-gray-300 font-bold" style="font-size: 16px; text-shadow: 1px 1px 0px rgba(0,0,0,0.5);">
+              <div class="text-gray-300 font-bold" style="font-size: 14px; text-shadow: 1px 1px 0px rgba(0,0,0,0.5);">
                 (<span id="pipes-points-display">0</span>pts)
               </div>
             </div>
@@ -153,22 +153,22 @@ export default class UIScene extends Phaser.Scene {
           
           <!-- Center - Score Display -->
           <div class="flex-1 flex justify-center">
-            <div class="game-3d-container-[#2C3E50] px-8 py-4" style="min-width: 200px;">
-              <div id="score-display" class="text-white text-center font-bold" style="font-size: 48px; text-shadow: 3px 3px 0px rgba(0,0,0,0.5);">
+            <div class="game-3d-container-[#2C3E50] px-6 py-2" style="min-width: 140px;">
+              <div id="score-display" class="text-white text-center font-bold" style="font-size: 40px; text-shadow: 3px 3px 0px rgba(0,0,0,0.5);">
                 0
               </div>
             </div>
           </div>
-          
+
           <!-- Right Side - Pause & Mute Buttons -->
-          <div class="flex justify-end gap-3" style="width: 200px;">
-            <button id="pause-button" class="game-3d-container-clickable-[#F39C12] px-6 py-4 pointer-events-auto cursor-pointer hover:scale-110 transition-transform" style="min-width: 80px;">
-              <div class="text-white font-bold text-center" style="font-size: 32px; text-shadow: 2px 2px 0px rgba(0,0,0,0.5);">
+          <div class="flex justify-end gap-2" style="width: 140px;">
+            <button id="pause-button" class="game-3d-container-clickable-[#F39C12] px-4 py-2 pointer-events-auto cursor-pointer hover:scale-110 transition-transform" style="min-width: 60px;">
+              <div class="text-white font-bold text-center" style="font-size: 28px; text-shadow: 2px 2px 0px rgba(0,0,0,0.5);">
                 ⏸️
               </div>
             </button>
-            <button id="mute-button" class="game-3d-container-clickable-[#2C3E50] px-6 py-4 pointer-events-auto cursor-pointer hover:scale-110 transition-transform" style="min-width: 80px;">
-              <div class="text-white font-bold text-center" style="font-size: 32px; text-shadow: 2px 2px 0px rgba(0,0,0,0.5);">
+            <button id="mute-button" class="game-3d-container-clickable-[#2C3E50] px-4 py-2 pointer-events-auto cursor-pointer hover:scale-110 transition-transform" style="min-width: 60px;">
+              <div class="text-white font-bold text-center" style="font-size: 28px; text-shadow: 2px 2px 0px rgba(0,0,0,0.5);">
                 <span id="mute-icon">🔊</span>
               </div>
             </button>
