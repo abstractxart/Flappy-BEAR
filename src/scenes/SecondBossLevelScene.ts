@@ -486,11 +486,23 @@ export class SecondBossLevelScene extends Phaser.Scene {
     this.musicManager.stop();
     this.musicManager.play();
 
+    // NUCLEAR OPTION: Remove ALL possible blocking overlays from DOM
+    console.log("💥 NUCLEAR CLEANUP: Removing all UI overlays");
+    const allOverlays = document.querySelectorAll('[id*="ui-container"], [id*="boss-ui"]');
+    allOverlays.forEach((overlay) => {
+      console.log("🧹 Removing overlay:", overlay.id);
+      overlay.remove();
+    });
+
     // CRITICAL: Manually remove BossUIScene DOM before stopping scene
     const bossUIScene = this.scene.get("BossUIScene") as any;
     if (bossUIScene && bossUIScene.uiContainer) {
       console.log("🧹 EMERGENCY: Manually destroying BossUIScene DOM");
-      bossUIScene.uiContainer.destroy();
+      try {
+        bossUIScene.uiContainer.destroy();
+      } catch (e) {
+        console.log("⚠️ Error destroying container, forcing removal");
+      }
       bossUIScene.uiContainer = null;
     }
 
@@ -507,6 +519,12 @@ export class SecondBossLevelScene extends Phaser.Scene {
       console.log("🔒 Canvas input disabled before GameOver");
     }
 
+    // ADDITIONAL: Disable ALL canvas elements just to be sure
+    document.querySelectorAll('canvas').forEach(canvas => {
+      (canvas as HTMLElement).style.pointerEvents = 'none';
+      (canvas as HTMLElement).style.touchAction = 'none';
+    });
+
     // Get current score from main game scene if available
     const mainGameScene = this.scene.get("GameScene") as any;
     const currentScore = mainGameScene?.score || 0;
@@ -522,14 +540,17 @@ export class SecondBossLevelScene extends Phaser.Scene {
 
     console.log("🚀 LAUNCHING GameOverUIScene with score:", currentScore);
 
-    // IMMEDIATELY stop current boss scene and launch game over scene
-    this.scene.start("GameOverUIScene", {
-      currentLevelKey: "GameScene", // Return to main game scene
-      score: currentScore,
-      bestScore: Math.max(currentScore, bestScore),
-      coinsCollected: coinsCollected,
-      isNewHighScore: isNewHighScore
-    });
+    // Add a small delay to ensure DOM cleanup completes before showing GameOver
+    setTimeout(() => {
+      // IMMEDIATELY stop current boss scene and launch game over scene
+      this.scene.start("GameOverUIScene", {
+        currentLevelKey: "GameScene", // Return to main game scene
+        score: currentScore,
+        bestScore: Math.max(currentScore, bestScore),
+        coinsCollected: coinsCollected,
+        isNewHighScore: isNewHighScore
+      });
+    }, 100); // 100ms delay to ensure cleanup
   }
 
   update(time: number, delta: number): void {

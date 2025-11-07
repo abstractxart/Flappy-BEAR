@@ -207,22 +207,22 @@ export class GameOverUIScene extends Phaser.Scene {
 
     const uiHTML = `
       <div id="game-over-container" style="
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        width: 100%;
-        height: 100%;
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
         background: linear-gradient(180deg, ${colors.charcoal} 0%, ${colors.ink} 100%);
-        z-index: 999999;
+        z-index: 2147483647 !important;
         overflow: hidden;
         display: flex;
         align-items: center;
         justify-content: center;
         font-family: 'Luckiest Guy', cursive;
-        pointer-events: auto;
-        touch-action: auto;
+        pointer-events: auto !important;
+        touch-action: auto !important;
       ">
         <div style="
           max-width: 600px;
