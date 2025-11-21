@@ -33,7 +33,7 @@ export class GameCompleteUIScene extends Phaser.Scene {
 
   createDOMUI(): void {
     const uiHTML = `
-      <div id="game-complete-container" class="fixed top-0 left-0 w-full h-full pointer-events-none z-[1000] font-retro flex flex-col justify-center items-center bg-black bg-opacity-70">
+      <div id="game-complete-container" class="absolute top-0 left-0 w-full h-full pointer-events-none z-[1000] font-retro flex flex-col justify-center items-center bg-black bg-opacity-70">
         <!-- Main Content Container -->
         <div class="flex flex-col items-center justify-center gap-16 p-8 text-center pointer-events-auto">
           

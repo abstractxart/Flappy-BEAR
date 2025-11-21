@@ -84,7 +84,7 @@ export class TitleScreen extends Phaser.Scene {
 
   createDOMUI(): void {
     let uiHTML = `
-      <div id="title-screen-container" class="fixed top-0 left-0 w-full h-full pointer-events-none z-[1000] font-supercell flex flex-col justify-between items-center">
+      <div id="title-screen-container" class="absolute top-0 left-0 w-full h-full pointer-events-none z-[1000] font-supercell flex flex-col justify-between items-center">
         <!-- Gradient Overlay for better readability -->
         <div class="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60 pointer-events-none"></div>
         

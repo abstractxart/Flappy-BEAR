@@ -40,7 +40,7 @@ export class BossUIScene extends Phaser.Scene {
 
   createDOMUI(): void {
     const uiHTML = `
-      <div id="boss-ui-container" class="fixed top-0 left-0 w-full h-full pointer-events-none z-[1000] font-supercell">
+      <div id="boss-ui-container" class="absolute top-0 left-0 w-full h-full pointer-events-none z-[1000] font-supercell">
         
         <!-- Pause & Mute Buttons (Top Right) -->
         <div class="absolute top-4 right-4 flex gap-3 pointer-events-auto">

@@ -44,7 +44,7 @@ export default class PauseMenuScene extends Phaser.Scene {
 
   createPauseMenuUI(): void {
     const uiHTML = `
-      <div id="pause-menu-container" class="fixed top-0 left-0 w-full h-full flex items-center justify-center pointer-events-none z-[1000] font-supercell">
+      <div id="pause-menu-container" class="absolute top-0 left-0 w-full h-full flex items-center justify-center pointer-events-none z-[1000] font-supercell">
         <!-- Pause Menu Card -->
         <div class="game-3d-container-[#2C3E50] px-12 py-8 pointer-events-auto" style="min-width: 500px; max-width: 600px;">
           

@@ -207,7 +207,7 @@ export class GameOverUIScene extends Phaser.Scene {
 
     const uiHTML = `
       <div id="game-over-container" style="
-        position: fixed !important;
+        position: absolute !important;
         top: 0 !important;
         left: 0 !important;
         right: 0 !important;
