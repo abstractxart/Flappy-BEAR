@@ -1455,38 +1455,286 @@ export default class GameScene extends Phaser.Scene {
    */
   checkStreakBonus(): void {
     const streak = this.consecutiveTubesPassed;
-    
-    if (streak === 5) {
+
+    // 🔥 DOPAMINE RUSH - Tons of streak milestones for maximum satisfaction!
+    if (streak === 3) {
+      const bonus = 2;
+      this.score += bonus;
+      this.createStreakEffect("3 STREAK!", bonus, "#00FF00");
+      this.sound.play("combo_pickup", { volume: 0.3 });
+      this.screenShake(1, 100);
+    } else if (streak === 5) {
       const bonus = 5;
       this.score += bonus;
       this.createStreakEffect("5 IN A ROW!", bonus, "#FFD700");
       this.sound.play("combo_pickup", { volume: 0.4 });
       this.screenShake(2, 150);
+    } else if (streak === 7) {
+      const bonus = 8;
+      this.score += bonus;
+      this.createStreakEffect("7 STREAK!\nLUCKY!", bonus, "#00FFFF");
+      this.sound.play("combo_pickup", { volume: 0.45 });
+      this.screenShake(2, 180);
     } else if (streak === 10) {
       const bonus = 15;
       this.score += bonus;
-      this.createStreakEffect("10 IN A ROW!", bonus, "#FF6B00");
+      this.createStreakEffect("10 IN A ROW!\n🔥 ON FIRE!", bonus, "#FF6B00");
       this.sound.play("new_high_score", { volume: 0.4 });
       this.screenShake(4, 250);
-    } else if (streak === 20) {
-      const bonus = 30;
+      this.createFireParticles();
+    } else if (streak === 15) {
+      const bonus = 25;
       this.score += bonus;
-      this.createStreakEffect("20 IN A ROW!\nMEGA STREAK!", bonus, "#FF00FF");
+      this.createStreakEffect("15 STREAK!\n⚡ ELECTRIFYING!", bonus, "#FFFF00");
+      this.sound.play("new_high_score", { volume: 0.45 });
+      this.screenShake(5, 300);
+      this.createLightningEffect();
+    } else if (streak === 20) {
+      const bonus = 40;
+      this.score += bonus;
+      this.createStreakEffect("20 IN A ROW!\n🚀 MEGA STREAK!", bonus, "#FF00FF");
       this.sound.play("new_high_score", { volume: 0.5 });
       this.screenShake(6, 400);
-      
-      // Zoom effect
       this.cameras.main.zoomTo(1.1, 200);
-      this.time.delayedCall(400, () => {
-        this.cameras.main.zoomTo(1.0, 300);
-      });
+      this.time.delayedCall(400, () => this.cameras.main.zoomTo(1.0, 300));
+    } else if (streak === 25) {
+      const bonus = 60;
+      this.score += bonus;
+      this.createStreakEffect("25 STREAK!\n💎 DIAMOND!", bonus, "#00FFFF");
+      this.sound.play("new_high_score", { volume: 0.55 });
+      this.screenShake(7, 450);
+      this.createDiamondExplosion();
+    } else if (streak === 30) {
+      const bonus = 80;
+      this.score += bonus;
+      this.createStreakEffect("30 IN A ROW!\n👑 LEGENDARY!", bonus, "#FFD700");
+      this.sound.play("new_high_score", { volume: 0.6 });
+      this.screenShake(8, 500);
+      this.cameras.main.zoomTo(1.15, 250);
+      this.time.delayedCall(500, () => this.cameras.main.zoomTo(1.0, 350));
+      this.createGoldenRain();
+    } else if (streak === 40) {
+      const bonus = 120;
+      this.score += bonus;
+      this.createStreakEffect("40 STREAK!\n🌟 MYTHICAL!", bonus, "#FF00FF");
+      this.sound.play("new_high_score", { volume: 0.65 });
+      this.screenShake(9, 550);
+      this.createRainbowExplosion();
+    } else if (streak === 50) {
+      const bonus = 175;
+      this.score += bonus;
+      this.createStreakEffect("50 IN A ROW!\n⭐ GODLIKE!", bonus, "#FFFFFF");
+      this.sound.play("new_high_score", { volume: 0.7 });
+      this.screenShake(10, 600);
+      this.cameras.main.zoomTo(1.2, 300);
+      this.time.delayedCall(600, () => this.cameras.main.zoomTo(1.0, 400));
+      this.createGodlikeAura();
+    } else if (streak === 75) {
+      const bonus = 300;
+      this.score += bonus;
+      this.createStreakEffect("75 STREAK!\n🔱 TRANSCENDENT!", bonus, "#FF6B00");
+      this.sound.play("new_high_score", { volume: 0.75 });
+      this.screenShake(12, 700);
+      this.createTranscendentEffect();
+    } else if (streak === 100) {
+      const bonus = 500;
+      this.score += bonus;
+      this.createStreakEffect("💯 100 STREAK!\n🏆 IMMORTAL BEAR!", bonus, "#FFD700");
+      this.sound.play("new_high_score", { volume: 0.8 });
+      this.screenShake(15, 800);
+      this.cameras.main.zoomTo(1.25, 350);
+      this.time.delayedCall(700, () => this.cameras.main.zoomTo(1.0, 450));
+      this.createImmortalExplosion();
     }
-    
+
     // Emit streak update
     this.events.emit("scoreUpdated", this.score);
-    
+
     // Check for boss trigger after any streak bonus
     this.checkBossTrigger();
+  }
+
+  /**
+   * 🔥 DOPAMINE EFFECTS - Visual explosions for maximum satisfaction
+   */
+  createFireParticles(): void {
+    for (let i = 0; i < 20; i++) {
+      const x = Phaser.Math.Between(100, this.scale.width - 100);
+      const particle = this.add.circle(x, this.scale.height + 20, Phaser.Math.Between(5, 12), 0xFF6B00);
+      particle.setDepth(1500);
+      this.tweens.add({
+        targets: particle,
+        y: -50,
+        alpha: 0,
+        scale: 0,
+        duration: Phaser.Math.Between(800, 1500),
+        delay: i * 50,
+        ease: "Power2",
+        onComplete: () => particle.destroy()
+      });
+    }
+  }
+
+  createLightningEffect(): void {
+    // Flash the screen
+    this.cameras.main.flash(200, 255, 255, 0, true);
+
+    // Create lightning bolts
+    for (let i = 0; i < 5; i++) {
+      const x = Phaser.Math.Between(50, this.scale.width - 50);
+      const bolt = this.add.rectangle(x, this.scale.height / 2, 4, this.scale.height, 0xFFFF00);
+      bolt.setDepth(1600);
+      bolt.setAlpha(0.8);
+      this.tweens.add({
+        targets: bolt,
+        alpha: 0,
+        scaleX: 3,
+        duration: 150,
+        delay: i * 40,
+        onComplete: () => bolt.destroy()
+      });
+    }
+  }
+
+  createDiamondExplosion(): void {
+    const centerX = this.scale.width / 2;
+    const centerY = this.scale.height / 2;
+    for (let i = 0; i < 16; i++) {
+      const angle = (i / 16) * Math.PI * 2;
+      const diamond = this.add.rectangle(centerX, centerY, 15, 15, 0x00FFFF);
+      diamond.setRotation(Math.PI / 4);
+      diamond.setDepth(1700);
+      this.tweens.add({
+        targets: diamond,
+        x: centerX + Math.cos(angle) * 400,
+        y: centerY + Math.sin(angle) * 400,
+        alpha: 0,
+        scale: 2,
+        rotation: diamond.rotation + Math.PI * 2,
+        duration: 1000,
+        ease: "Power2",
+        onComplete: () => diamond.destroy()
+      });
+    }
+  }
+
+  createGoldenRain(): void {
+    for (let i = 0; i < 30; i++) {
+      const x = Phaser.Math.Between(0, this.scale.width);
+      const coin = this.add.circle(x, -20, Phaser.Math.Between(8, 15), 0xFFD700);
+      coin.setDepth(1500);
+      this.tweens.add({
+        targets: coin,
+        y: this.scale.height + 50,
+        rotation: Math.PI * 4,
+        duration: Phaser.Math.Between(1500, 2500),
+        delay: i * 30,
+        ease: "Sine.easeIn",
+        onComplete: () => coin.destroy()
+      });
+    }
+  }
+
+  createRainbowExplosion(): void {
+    const colors = [0xFF0000, 0xFF7F00, 0xFFFF00, 0x00FF00, 0x0000FF, 0x4B0082, 0x9400D3];
+    const centerX = this.scale.width / 2;
+    const centerY = this.scale.height / 2;
+
+    colors.forEach((color, colorIndex) => {
+      for (let i = 0; i < 8; i++) {
+        const angle = (i / 8) * Math.PI * 2 + (colorIndex * 0.1);
+        const particle = this.add.circle(centerX, centerY, 10, color);
+        particle.setDepth(1800);
+        this.tweens.add({
+          targets: particle,
+          x: centerX + Math.cos(angle) * (200 + colorIndex * 30),
+          y: centerY + Math.sin(angle) * (200 + colorIndex * 30),
+          alpha: 0,
+          scale: 0.5,
+          duration: 1200,
+          delay: colorIndex * 50,
+          ease: "Power2",
+          onComplete: () => particle.destroy()
+        });
+      }
+    });
+  }
+
+  createGodlikeAura(): void {
+    // Pulsing white rings
+    for (let i = 0; i < 5; i++) {
+      const ring = this.add.circle(this.bear.x, this.bear.y, 20, 0xFFFFFF, 0);
+      ring.setStrokeStyle(4, 0xFFFFFF, 0.8);
+      ring.setDepth(1900);
+      this.tweens.add({
+        targets: ring,
+        scale: 15,
+        alpha: 0,
+        duration: 1500,
+        delay: i * 200,
+        ease: "Power2",
+        onComplete: () => ring.destroy()
+      });
+    }
+
+    // Screen flash
+    this.cameras.main.flash(300, 255, 255, 255, true);
+  }
+
+  createTranscendentEffect(): void {
+    // Spiral particles
+    for (let i = 0; i < 40; i++) {
+      const angle = (i / 40) * Math.PI * 4;
+      const distance = i * 10;
+      const x = this.scale.width / 2 + Math.cos(angle) * distance;
+      const y = this.scale.height / 2 + Math.sin(angle) * distance;
+      const particle = this.add.circle(this.scale.width / 2, this.scale.height / 2, 6, 0xFF6B00);
+      particle.setDepth(2000);
+      this.tweens.add({
+        targets: particle,
+        x: x,
+        y: y,
+        alpha: 0,
+        scale: 2,
+        duration: 1500,
+        delay: i * 25,
+        ease: "Power2",
+        onComplete: () => particle.destroy()
+      });
+    }
+  }
+
+  createImmortalExplosion(): void {
+    // MEGA explosion - all effects combined!
+    this.createFireParticles();
+    this.createGoldenRain();
+    this.createRainbowExplosion();
+
+    // Giant pulsing text
+    const immortalText = this.add.text(this.scale.width / 2, this.scale.height / 2, "🏆 IMMORTAL 🏆", {
+      fontFamily: "SupercellMagic",
+      fontSize: "72px",
+      color: "#FFD700",
+      stroke: "#000000",
+      strokeThickness: 8
+    });
+    immortalText.setOrigin(0.5, 0.5);
+    immortalText.setDepth(3000);
+
+    this.tweens.add({
+      targets: immortalText,
+      scale: { from: 0.5, to: 2 },
+      alpha: { from: 1, to: 0 },
+      rotation: { from: -0.1, to: 0.1 },
+      duration: 2500,
+      ease: "Power2",
+      onComplete: () => immortalText.destroy()
+    });
+
+    // Multiple screen flashes
+    this.cameras.main.flash(150, 255, 215, 0, true);
+    this.time.delayedCall(200, () => this.cameras.main.flash(150, 255, 255, 255, true));
+    this.time.delayedCall(400, () => this.cameras.main.flash(150, 255, 0, 255, true));
   }
   
   /**
