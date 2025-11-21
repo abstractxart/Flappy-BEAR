@@ -39,8 +39,17 @@ export const initUIDom = (scene: Phaser.Scene, html: string): Phaser.GameObjects
   const gameWidth = scene.scale.width;
   const gameHeight = scene.scale.height;
 
-  // Position at top-left (0,0) with top-left origin - no scaling needed
-  const dom = scene.add.dom(0, 0, 'div', `width: ${gameWidth}px; height: ${gameHeight}px; position: relative; overflow: hidden;`).setHTML(html);
+  // Position at top-left (0,0) with top-left origin - ensure NO margins/padding/offsets
+  const dom = scene.add.dom(0, 0, 'div', `
+    width: ${gameWidth}px;
+    height: ${gameHeight}px;
+    position: relative;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    top: 0;
+    left: 0;
+  `).setHTML(html);
   dom.pointerEvents = 'none';
   dom.setOrigin(0, 0);
   dom.setScrollFactor(0);
