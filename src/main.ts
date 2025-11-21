@@ -23,7 +23,7 @@ const config: Phaser.Types.Core.GameConfig = {
   },
   scale: {
     mode: Phaser.Scale.FIT,
-    autoCenter: Phaser.Scale.CENTER_BOTH,
+    autoCenter: Phaser.Scale.CENTER_HORIZONTALLY,
     width: screenSize.width.value,
     height: screenSize.height.value,
     fullscreenTarget: 'game-container',
