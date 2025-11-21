@@ -35,13 +35,23 @@ export const createTrigger = (
  * IMPORTANT: Always use this instead of add.dom and createFromHTML
  */
 export const initUIDom = (scene: Phaser.Scene, html: string): Phaser.GameObjects.DOMElement => {
-  // Position at center of game with center origin for proper scaling alignment
+  // Use display size (actual screen pixels) instead of game size to prevent double-scaling
+  const displayWidth = scene.scale.displaySize.width;
+  const displayHeight = scene.scale.displaySize.height;
   const gameWidth = scene.scale.width;
   const gameHeight = scene.scale.height;
-  const dom = scene.add.dom(gameWidth / 2, gameHeight / 2, 'div', `width: ${gameWidth}px; height: ${gameHeight}px; position: relative; overflow: hidden;`).setHTML(html);
+
+  // Position at game center, but size to display dimensions
+  const dom = scene.add.dom(gameWidth / 2, gameHeight / 2, 'div', `width: ${displayWidth}px; height: ${displayHeight}px; position: relative; overflow: hidden;`).setHTML(html);
   dom.pointerEvents = 'none';
   dom.setOrigin(0.5, 0.5);
   dom.setScrollFactor(0);
+
+  // Scale down the DOM to match game coordinates (counteract Phaser's scaling)
+  const scaleX = gameWidth / displayWidth;
+  const scaleY = gameHeight / displayHeight;
+  dom.setScale(scaleX, scaleY);
+
   return dom;
 }
 
