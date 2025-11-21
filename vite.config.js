@@ -2,6 +2,7 @@ import { defineConfig } from "vite"
 
 // https://vite.dev/config/
 export default defineConfig({
+  base: './',  // Use relative paths for assets
   server: {
     host: "::",
     port: 8080,
@@ -26,4 +27,4 @@ export default defineConfig({
       reporter: ["text", "html"],
     },
   },
-})
+});
