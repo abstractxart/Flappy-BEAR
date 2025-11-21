@@ -185,7 +185,7 @@ export default class UIScene extends Phaser.Scene {
         </div>
         
         <!-- Power-Up Timer (Jester Hat) - Positioned to the left -->
-        <div id="powerup-timer-container" class="absolute top-48 left-1/3 -translate-x-1/2 hidden" style="z-index: 1001;">
+        <div id="powerup-timer-container" class="absolute top-20 left-1/3 -translate-x-1/2 hidden" style="z-index: 1001;">
           <div class="game-3d-container-[#FF6B00] px-6 py-2 flex items-center gap-3">
             <div class="text-white font-bold text-center" style="font-size: 16px; text-shadow: 2px 2px 0px rgba(0,0,0,0.5);">
               🎪 INVINCIBLE
@@ -202,7 +202,7 @@ export default class UIScene extends Phaser.Scene {
         </div>
         
         <!-- Streak Counter -->
-        <div id="streak-counter" class="absolute top-64 left-1/2 -translate-x-1/2 hidden" style="z-index: 1000;">
+        <div id="streak-counter" class="absolute top-20 left-1/2 -translate-x-1/2 hidden" style="z-index: 1000;">
           <div class="game-3d-container-[#3498DB] px-6 py-3">
             <div class="text-white font-bold text-center" style="font-size: 20px; text-shadow: 2px 2px 0px rgba(0,0,0,0.5);">
               🔥 STREAK: <span id="streak-count">0</span>

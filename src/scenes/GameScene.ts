@@ -1765,7 +1765,7 @@ export default class GameScene extends Phaser.Scene {
    */
   createStreakLostEffect(): void {
     const centerX = this.scale.width / 2;
-    const centerY = this.scale.height / 3;
+    const centerY = this.scale.height / 8;  // Moved UP - was /3, now /8
     
     const streakLostText = this.add.text(centerX, centerY, "STREAK LOST!", {
       fontFamily: "SupercellMagic",
@@ -1798,7 +1798,7 @@ export default class GameScene extends Phaser.Scene {
    */
   createStreakEffect(text: string, bonus: number, color: string): void {
     const centerX = this.scale.width / 2;
-    const centerY = this.scale.height / 3;
+    const centerY = this.scale.height / 8;  // Moved UP - was /3, now /8
     
     const streakText = this.add.text(centerX, centerY, text, {
       fontFamily: "SupercellMagic",
