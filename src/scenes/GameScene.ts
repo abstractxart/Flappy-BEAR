@@ -318,14 +318,14 @@ export default class GameScene extends Phaser.Scene {
    */
   startGame(): void {
     this.gameStarted = true;
-    
+
     // Enable gravity
     this.bear.body.setGravityY(this.bear.gravity);
-    
+
     // Initialize time tracking for speed increases
     this.gameStartTime = this.time.now;
     this.lastSpeedIncreaseTime = this.time.now;
-    
+
     // Start spawning tubes with random variance
     this.scheduleNextTubeSpawn();
   }
@@ -448,13 +448,13 @@ export default class GameScene extends Phaser.Scene {
     const baseScore = bossConfig.bossTriggerScore.value; // 123
     const bossesDefeated = parseInt(localStorage.getItem("flappyBearBossesDefeated") || "0");
     
-    // First boss at 123, then each subsequent boss needs +150 points from current score
+    // First boss at 589, then each subsequent boss needs +589 points from current score
     if (bossesDefeated === 0) {
-      return baseScore; // First boss at 123 points
+      return baseScore; // First boss at 589 points
     } else {
-      // For subsequent bosses, use the accumulated score + 150
-      const lastBossVictoryScore = parseInt(localStorage.getItem("flappyBearLastBossVictoryScore") || "123");
-      return lastBossVictoryScore + 150;
+      // For subsequent bosses, use the accumulated score + 589
+      const lastBossVictoryScore = parseInt(localStorage.getItem("flappyBearLastBossVictoryScore") || "589");
+      return lastBossVictoryScore + 589;
     }
   }
 
@@ -2102,12 +2102,12 @@ export default class GameScene extends Phaser.Scene {
    */
   handleGameOver(): void {
     if (this.gameOver) return;
-    
+
     this.gameOver = true;
-    
+
     // Stop spawning
     this.tubeSpawnTimer?.remove();
-    
+
     // Stop all tubes, coins, enemies, and power-ups
     this.tubes.children.entries.forEach((tube: any) => {
       if (tube instanceof CryptoPipe) {
@@ -2131,35 +2131,35 @@ export default class GameScene extends Phaser.Scene {
         powerUp.body.setVelocityX(0);
       }
     });
-    
+
     // Check for new high score
     let isNewHighScore = false;
     if (this.score > this.bestScore) {
       isNewHighScore = true;
       this.bestScore = this.score;
       localStorage.setItem("flappyBearBestScore", this.bestScore.toString());
-      
+
       // Play high score sound and screen shake
       this.sound.play("new_high_score", { volume: 0.3 });
       this.screenShake(5, 400);
     }
-    
+
     // Update total lifetime coins (separately for XRP and Golden Bears)
     const totalXRP = parseInt(localStorage.getItem("flappyBearTotalXRP") || "0");
     const totalGoldenBears = parseInt(localStorage.getItem("flappyBearTotalGoldenBears") || "0");
-    
+
     localStorage.setItem("flappyBearTotalXRP", (totalXRP + this.coinsCollected).toString());
     localStorage.setItem("flappyBearTotalGoldenBears", (totalGoldenBears + this.goldenBearsCollected).toString());
-    
+
     // Also update legacy total coins for backwards compatibility
     this.totalLifetimeCoins += this.coinsCollected + this.goldenBearsCollected;
     localStorage.setItem("flappyBearTotalCoins", this.totalLifetimeCoins.toString());
-    
+
     // Play game over sound
     this.time.delayedCall(500, () => {
       this.sound.play("game_over_sound", { volume: 0.3 });
     });
-    
+
     // Show game over UI after delay
     this.time.delayedCall(1500, () => {
       this.scene.launch("GameOverUIScene", {
