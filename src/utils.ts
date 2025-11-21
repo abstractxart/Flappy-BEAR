@@ -35,10 +35,10 @@ export const createTrigger = (
  * IMPORTANT: Always use this instead of add.dom and createFromHTML
  */
 export const initUIDom = (scene: Phaser.Scene, html: string): Phaser.GameObjects.DOMElement => {
-  // Use game's logical dimensions instead of percentages for proper scaling
+  // Use game's logical dimensions and position:relative for proper absolute child positioning
   const gameWidth = scene.scale.width;
   const gameHeight = scene.scale.height;
-  const dom = scene.add.dom(0, 0, 'div', `width: ${gameWidth}px; height: ${gameHeight}px;`).setHTML(html);
+  const dom = scene.add.dom(0, 0, 'div', `width: ${gameWidth}px; height: ${gameHeight}px; position: relative; overflow: hidden;`).setHTML(html);
   dom.pointerEvents = 'none';
   dom.setOrigin(0, 0);
   dom.setScrollFactor(0);
