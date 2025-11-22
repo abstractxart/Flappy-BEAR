@@ -79,6 +79,10 @@ export class GameOverUIScene extends Phaser.Scene {
   async create(): Promise<void> {
     console.log('🔍 [DEBUG] === GameOverUIScene.create() called ===');
     console.log('🔍 [DEBUG] Score:', this.score, 'Best:', this.bestScore);
+    console.log('🍯 [DEBUG] Honey Points Earned:', this.honeyPointsEarned);
+    console.log('🍯 [DEBUG] Honey Minutes Today:', this.honeyMinutesToday);
+    console.log('🍯 [DEBUG] Honey Max Minutes:', this.honeyMaxMinutes);
+    console.log('🍯 [DEBUG] Honey Remaining:', this.honeyRemainingMinutes);
     console.log('🔍 [DEBUG] Authentication status:', BEARParkAPI.isAuthenticated());
     console.log('🔍 [DEBUG] Wallet:', BEARParkAPI.getWalletAddress());
     console.log('🔍 [DEBUG] Display name:', BEARParkAPI.getCurrentUserDisplayName());

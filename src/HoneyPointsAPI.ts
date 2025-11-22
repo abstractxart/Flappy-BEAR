@@ -27,9 +27,13 @@ export class HoneyPointsAPI {
     try {
       const walletAddress = localStorage.getItem('xaman_wallet_address');
 
+      console.log('🍯 [HONEY DEBUG] Starting honey points award...');
+      console.log('🍯 [HONEY DEBUG] Wallet:', walletAddress);
+      console.log('🍯 [HONEY DEBUG] Minutes played:', minutesPlayed);
+
       if (!walletAddress) {
         console.log('ℹ️ No wallet connected, cannot award honey points');
-        return {
+        const result = {
           success: false,
           message: 'No wallet connected',
           points_awarded: 0,
@@ -37,12 +41,15 @@ export class HoneyPointsAPI {
           max_minutes: MAX_DAILY_MINUTES,
           remaining_minutes: MAX_DAILY_MINUTES
         };
+        console.log('🍯 [HONEY DEBUG] Returning (no wallet):', result);
+        return result;
       }
 
       // Round to 0.1 minute precision
       const roundedMinutes = Math.round(minutesPlayed * 10) / 10;
 
       console.log(`🍯 Awarding honey points for ${GAME_ID} - ${roundedMinutes} minutes...`);
+      console.log('🍯 [HONEY DEBUG] API URL:', `${API_BASE_URL}/api/games/complete`);
 
       const response = await fetch(`${API_BASE_URL}/api/games/complete`, {
         method: 'POST',
@@ -56,7 +63,11 @@ export class HoneyPointsAPI {
         })
       });
 
+      console.log('🍯 [HONEY DEBUG] Response status:', response.status);
+
       const data = await response.json();
+
+      console.log('🍯 [HONEY DEBUG] Response data:', data);
 
       if (data.success) {
         console.log(`✅ Awarded ${data.points_awarded} honey points!`);
@@ -65,6 +76,7 @@ export class HoneyPointsAPI {
         console.log(`⚠️ ${data.message}`);
       }
 
+      console.log('🍯 [HONEY DEBUG] Returning:', data);
       return data;
 
     } catch (error) {
