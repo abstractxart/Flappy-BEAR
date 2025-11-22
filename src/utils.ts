@@ -39,27 +39,18 @@ export const initUIDom = (scene: Phaser.Scene, html: string): Phaser.GameObjects
   const gameWidth = scene.scale.width;
   const gameHeight = scene.scale.height;
 
-  // Calculate vertical offset when game is centered (CENTER_BOTH)
-  // This ensures UI stays at viewport top even when game has black bars
-  const canvas = scene.scale.canvas;
-  const parent = scene.scale.parent;
-  const parentHeight = parent ? parent.clientHeight : window.innerHeight;
-  const canvasHeight = canvas.style.height ? parseInt(canvas.style.height) : canvas.height;
-  const topOffset = (parentHeight - canvasHeight) / 2;
-
-  // Convert pixel offset to game coordinate offset
-  const gameYOffset = topOffset / scene.scale.displayScale.y;
-
-  // Position at top-left but offset upward to compensate for centering
-  const dom = scene.add.dom(0, -gameYOffset, 'div', `
+  // Position at (0,0) and use FIXED positioning to stick to viewport top
+  // This keeps UI at screen top even when game canvas is centered with black bars
+  const dom = scene.add.dom(0, 0, 'div', `
     width: ${gameWidth}px;
     height: ${gameHeight}px;
-    position: relative;
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
     overflow: hidden;
     margin: 0;
     padding: 0;
-    top: 0;
-    left: 0;
   `).setHTML(html);
   dom.pointerEvents = 'none';
   dom.setOrigin(0, 0);
