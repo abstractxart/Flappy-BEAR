@@ -529,6 +529,35 @@ export class GameOverUIScene extends Phaser.Scene {
             MAIN MENU
           </button>
 
+          <!-- Back to BEAR Park Button -->
+          <button
+            id="back-to-bearpark-btn"
+            style="
+              width: 100%;
+              padding: 10px;
+              font-size: 18px;
+              font-family: 'Luckiest Guy', cursive;
+              background: linear-gradient(135deg, ${colors.purple} 0%, ${colors.yellow} 50%, ${colors.green} 100%);
+              color: #fff;
+              border: 2px solid rgba(255,255,255,.3);
+              border-radius: 10px;
+              cursor: pointer;
+              transition: all 0.2s ease;
+              text-shadow: 2px 2px 0px #000;
+              pointer-events: auto;
+              touch-action: manipulation;
+              box-shadow: 0 3px 12px rgba(237,183,35,.3);
+            "
+            onmouseover="this.style.transform='scale(1.02)'; this.style.boxShadow='0 4px 16px rgba(237,183,35,.5)';"
+            onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 3px 12px rgba(237,183,35,.3)';"
+            onmousedown="this.style.transform='scale(0.98)';"
+            onmouseup="this.style.transform='scale(1.02)';"
+            ontouchstart="this.style.transform='scale(0.98)';"
+            ontouchend="this.style.transform='scale(1)';"
+          >
+            🏠 BACK TO BEAR PARK
+          </button>
+
         </div>
 
         <!-- Custom Animations -->
@@ -614,6 +643,17 @@ export class GameOverUIScene extends Phaser.Scene {
         e.preventDefault();
         e.stopPropagation();
         this.returnToTitle();
+      });
+    }
+
+    // Setup back to BEAR Park button click handler
+    const bearParkBtn = document.getElementById('back-to-bearpark-btn');
+    if (bearParkBtn) {
+      bearParkBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        // Redirect to BEAR Park home
+        window.location.href = 'https://www.bearpark.xyz';
       });
     }
 
