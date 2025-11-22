@@ -27,7 +27,13 @@
       "Bash(if exist dist rmdir /s /q dist)",
       "Bash(if exist node_modules.vite rmdir /s /q node_modules.vite)",
       "Bash(cmd.exe /c \"robocopy \"\"c:\\Users\\Oz\\Downloads\\Flappy BEAR\\dist\"\" \"\"C:\\Users\\Oz\\Desktop\\BEARpark\\frontend\\flappy-bear\"\" /MIR\")",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(find:*)",
+      "Bash(git ls-tree:*)",
+      "Bash(cmd.exe:*)",
+      "Bash(exit 0)",
+      "Bash(dir \"C:\\Users\\Oz\\Desktop\\BEARpark\\frontend\\bear-jumpventure\" /B)",
+      "Bash(dir:*)"
     ],
     "deny": [],
     "ask": []
