@@ -4,6 +4,7 @@ import { CryptoPipe } from "../CryptoPipe";
 import { EnemyBee } from "../EnemyBee";
 import * as utils from "../utils";
 import { MusicManager } from "../MusicManager";
+import { HoneyPointsAPI } from "../HoneyPointsAPI";
 import { gameplayConfig, enemyConfig, powerUpConfig, nearMissConfig, bossConfig } from "../gameConfig.json";
 
 /**
@@ -2348,7 +2349,7 @@ export default class GameScene extends Phaser.Scene {
   /**
    * Handle game over
    */
-  handleGameOver(): void {
+  async handleGameOver(): Promise<void> {
     if (this.gameOver) return;
 
     this.gameOver = true;
@@ -2403,6 +2404,16 @@ export default class GameScene extends Phaser.Scene {
     this.totalLifetimeCoins += this.coinsCollected + this.goldenBearsCollected;
     localStorage.setItem("flappyBearTotalCoins", this.totalLifetimeCoins.toString());
 
+    // Calculate game duration and award honey points
+    const gameEndTime = this.time.now;
+    const durationMs = gameEndTime - this.gameStartTime;
+    const minutesPlayed = durationMs / 60000; // Convert ms to minutes
+
+    console.log(`🍯 Game duration: ${minutesPlayed.toFixed(2)} minutes`);
+
+    // Award honey points (async call)
+    const honeyResult = await HoneyPointsAPI.awardPoints(minutesPlayed);
+
     // Play game over sound
     this.time.delayedCall(500, () => {
       this.sound.play("game_over_sound", { volume: 0.3 });
@@ -2415,7 +2426,11 @@ export default class GameScene extends Phaser.Scene {
         score: this.score,
         bestScore: this.bestScore,
         coinsCollected: this.coinsCollected,
-        isNewHighScore: isNewHighScore
+        isNewHighScore: isNewHighScore,
+        honeyPointsEarned: honeyResult.points_awarded || 0,
+        honeyMinutesToday: honeyResult.minutes_today || 0,
+        honeyMaxMinutes: honeyResult.max_minutes || 123,
+        honeyRemainingMinutes: honeyResult.remaining_minutes || 0
       });
     });
   }

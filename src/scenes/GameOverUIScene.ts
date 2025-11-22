@@ -25,7 +25,13 @@ export class GameOverUIScene extends Phaser.Scene {
   private bestScore: number = 0;
   private coinsCollected: number = 0;
   private isNewHighScore: boolean = false;
-  
+
+  // Honey Points data
+  private honeyPointsEarned: number = 0;
+  private honeyMinutesToday: number = 0;
+  private honeyMaxMinutes: number = 123;
+  private honeyRemainingMinutes: number = 0;
+
   // Leaderboard
   private leaderboard: LeaderboardEntry[] = [];
   private playerName: string = "";
@@ -46,6 +52,10 @@ export class GameOverUIScene extends Phaser.Scene {
     bestScore?: number;
     coinsCollected?: number;
     isNewHighScore?: boolean;
+    honeyPointsEarned?: number;
+    honeyMinutesToday?: number;
+    honeyMaxMinutes?: number;
+    honeyRemainingMinutes?: number;
   }) {
     // Receive data from game scene
     this.currentLevelKey = data.currentLevelKey || "GameScene";
@@ -53,6 +63,12 @@ export class GameOverUIScene extends Phaser.Scene {
     this.bestScore = data.bestScore || 0;
     this.coinsCollected = data.coinsCollected || 0;
     this.isNewHighScore = data.isNewHighScore || false;
+
+    // Honey points data
+    this.honeyPointsEarned = data.honeyPointsEarned || 0;
+    this.honeyMinutesToday = data.honeyMinutesToday || 0;
+    this.honeyMaxMinutes = data.honeyMaxMinutes || 123;
+    this.honeyRemainingMinutes = data.honeyRemainingMinutes || 0;
 
     // Reset restart flag
     this.isRestarting = false;
@@ -288,6 +304,67 @@ export class GameOverUIScene extends Phaser.Scene {
               </div>
               <div style="font-size: 14px; color: #fff; text-align: center; margin-top: 4px;">🪙 ${this.coinsCollected} XRP</div>
             </div>
+          </div>
+
+          <!-- Honey Points Card -->
+          <div style="
+            background: linear-gradient(135deg, rgba(255,215,0,0.15) 0%, rgba(255,165,0,0.1) 100%);
+            border-radius: 12px;
+            padding: 12px;
+            border: 2px solid rgba(255,215,0,0.3);
+            box-shadow: 0 0 20px rgba(255,215,0,0.2);
+          ">
+            <div style="
+              font-size: 32px;
+              text-align: center;
+              margin-bottom: 8px;
+              filter: drop-shadow(0 0 8px rgba(255,215,0,0.6));
+            ">🍯</div>
+
+            <div style="
+              font-size: 24px;
+              color: ${colors.gold};
+              text-align: center;
+              text-shadow: 2px 2px 0px rgba(0,0,0,0.5);
+              margin-bottom: 8px;
+              font-family: 'Luckiest Guy', cursive;
+            ">
+              +${this.honeyPointsEarned.toFixed(1)} HONEY POINTS
+            </div>
+
+            ${this.honeyPointsEarned > 0 ? `
+            <div style="
+              font-size: 14px;
+              color: rgba(255,255,255,0.9);
+              text-align: center;
+              margin-top: 8px;
+              padding: 8px;
+              background: rgba(0,0,0,0.3);
+              border-radius: 8px;
+            ">
+              <div style="margin-bottom: 4px;">
+                📊 <span style="color: ${colors.yellow};">${this.honeyMinutesToday.toFixed(1)}</span> / ${this.honeyMaxMinutes} minutes today
+              </div>
+              ${this.honeyRemainingMinutes > 0
+                ? `<div style="color: ${colors.green};">⏱️ ${this.honeyRemainingMinutes.toFixed(1)} minutes left!</div>`
+                : `<div style="color: #ff79c6;">🔥 Daily limit reached!</div>`
+              }
+            </div>
+            ` : `
+            <div style="
+              font-size: 13px;
+              color: rgba(255,255,255,0.7);
+              text-align: center;
+              margin-top: 8px;
+              padding: 8px;
+              background: rgba(0,0,0,0.3);
+              border-radius: 8px;
+            ">
+              ${BEARParkAPI.isAuthenticated()
+                ? '⚠️ No honey earned (game too short or daily limit reached)'
+                : '🔒 Connect wallet at bearpark.xyz to earn honey!'}
+            </div>
+            `}
           </div>
 
           <!-- Name Entry Form (only shown if NOT authenticated) -->
