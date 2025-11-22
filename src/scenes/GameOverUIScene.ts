@@ -178,9 +178,9 @@ export class GameOverUIScene extends Phaser.Scene {
          ">✨ NEW HIGH SCORE! ✨</div>`
       : '';
 
-    // Generate leaderboard HTML with BEAR Park style (top 5 only)
+    // Generate leaderboard HTML with BEAR Park style (top 10)
     console.log('🔍 [DEBUG] Generating leaderboard HTML from', this.leaderboard.length, 'entries');
-    const leaderboardHTML = this.leaderboard.slice(0, 5).map((entry, index) => {
+    const leaderboardHTML = this.leaderboard.slice(0, 10).map((entry, index) => {
       const medal = index === 0 ? '🥇' : (index === 1 ? '🥈' : (index === 2 ? '🥉' : ''));
       const borderColor = index === 0 ? '#FFD700' : (index === 1 ? '#C0C0C0' : (index === 2 ? '#CD7F32' : colors.gold));
       const borderWidth = index === 0 ? '4px' : (index === 1 ? '3px' : (index === 2 ? '3px' : '2px'));
@@ -460,14 +460,14 @@ export class GameOverUIScene extends Phaser.Scene {
             text-align: center;
             text-transform: uppercase;
             font-family: 'Luckiest Guy', cursive;
-          ">🏆 TOP 5 PLAYERS 🏆</div>
+          ">🏆 TOP 10 PLAYERS 🏆</div>
 
           <!-- Leaderboard -->
           <div style="
             background: radial-gradient(500px 200px at 50% -20%, rgba(118,174,255,.08), transparent 60%), ${colors.ink};
             border-radius: 12px;
             padding: 10px;
-            max-height: 140px;
+            max-height: 340px;
             overflow-y: auto;
           ">
             ${leaderboardHTML || '<div style="color: #fff; font-size: 14px; text-align: center;">No scores yet!</div>'}
