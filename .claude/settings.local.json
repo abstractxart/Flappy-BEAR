@@ -1,0 +1,35 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git push)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nDEBUG: Deploy new betting lobby with aggressive logging to PUBLIC folder\n\nFixed deployment - was deploying to /pong/ instead of /public/pong/\nNow the new debug build will actually be served by Vercel!\n\n🤖 Generated with Claude Code\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(git commit:*)",
+      "Bash(npm run build:*)",
+      "Bash(npm install:*)",
+      "Bash(npx cap init:*)",
+      "Bash(npx cap:*)",
+      "Bash(gradlew.bat clean:*)",
+      "Bash(cmd.exe /c \"gradlew.bat clean assembleDebug\")",
+      "Bash(curl:*)",
+      "Bash(dir /B /S *.html 2)",
+      "Bash(NUL)",
+      "Bash(findstr:*)",
+      "Bash(dir /B /S *.js 2)",
+      "Bash(git add:*)",
+      "Bash(dir /B /S \"C:\\Users\\Oz\\Desktop\\BEARpark\\api\" 2)",
+      "Bash(dir /B /S \"C:\\Users\\Oz\\Desktop\\BEARpark\\api\\points\" 2)",
+      "Bash(dir /B \"C:\\Users\\Oz\\Desktop\\BEARpark\\api\" 2)",
+      "Bash(dir /S /B \"C:\\Users\\Oz\\Desktop\\BEARpark\")",
+      "Bash(xcopy:*)",
+      "Bash(cmd.exe /c \"xcopy /E /I /Y \"\"c:\\Users\\Oz\\Downloads\\Flappy BEAR\\dist\\*\"\" \"\"C:\\Users\\Oz\\Desktop\\BEARpark\\frontend\\flappy-bear\\\"\"\")",
+      "Bash(robocopy:*)",
+      "Bash(powershell -Command:*)",
+      "Bash(if exist dist rmdir /s /q dist)",
+      "Bash(if exist node_modules.vite rmdir /s /q node_modules.vite)",
+      "Bash(cmd.exe /c \"robocopy \"\"c:\\Users\\Oz\\Downloads\\Flappy BEAR\\dist\"\" \"\"C:\\Users\\Oz\\Desktop\\BEARpark\\frontend\\flappy-bear\"\" /MIR\")",
+      "Bash(cat:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

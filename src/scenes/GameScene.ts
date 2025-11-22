@@ -2411,8 +2411,10 @@ export default class GameScene extends Phaser.Scene {
 
     console.log(`🍯 Game duration: ${minutesPlayed.toFixed(2)} minutes`);
 
-    // Award honey points (async call)
-    const honeyResult = await HoneyPointsAPI.awardPoints(minutesPlayed);
+    // Award honey points using the global game-points-helper (shows popup)
+    if ((window as any).awardGamePoints) {
+      (window as any).awardGamePoints('flappy-bear', minutesPlayed);
+    }
 
     // Play game over sound
     this.time.delayedCall(500, () => {
@@ -2426,11 +2428,7 @@ export default class GameScene extends Phaser.Scene {
         score: this.score,
         bestScore: this.bestScore,
         coinsCollected: this.coinsCollected,
-        isNewHighScore: isNewHighScore,
-        honeyPointsEarned: honeyResult.points_awarded || 0,
-        honeyMinutesToday: honeyResult.minutes_today || 0,
-        honeyMaxMinutes: honeyResult.max_minutes || 123,
-        honeyRemainingMinutes: honeyResult.remaining_minutes || 0
+        isNewHighScore: isNewHighScore
       });
     });
   }
