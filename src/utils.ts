@@ -39,18 +39,17 @@ export const initUIDom = (scene: Phaser.Scene, html: string): Phaser.GameObjects
   const gameWidth = scene.scale.width;
   const gameHeight = scene.scale.height;
 
-  // Position at (0,0) and use FIXED positioning to stick to viewport top
-  // This keeps UI at screen top even when game canvas is centered with black bars
+  // Position at (0,0) with RELATIVE positioning
+  // UI stays at game canvas origin (top-left of game, not viewport)
   const dom = scene.add.dom(0, 0, 'div', `
     width: ${gameWidth}px;
     height: ${gameHeight}px;
-    position: fixed;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
+    position: relative;
     overflow: hidden;
     margin: 0;
     padding: 0;
+    top: 0;
+    left: 0;
   `).setHTML(html);
   dom.pointerEvents = 'none';
   dom.setOrigin(0, 0);
