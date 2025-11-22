@@ -2,7 +2,7 @@ import { defineConfig } from "vite"
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: './',  // Use relative paths for assets
+  base: '/bear-jumpventure/',  // Deploy to /bear-jumpventure/ subdirectory on BEARpark
   server: {
     host: "::",
     port: 8080,
