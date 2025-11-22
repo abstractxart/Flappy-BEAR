@@ -1,6 +1,7 @@
 import Phaser from "phaser";
 import { screenSize, debugConfig, renderConfig } from "./gameConfig.json";
 import "./styles/tailwind.css";
+import "./styles/base.css";
 import { Preloader } from "./scenes/Preloader";
 import { TitleScreen } from "./scenes/TitleScreen";
 import GameScene from "./scenes/GameScene";
@@ -23,7 +24,7 @@ const config: Phaser.Types.Core.GameConfig = {
   },
   scale: {
     mode: Phaser.Scale.FIT,
-    autoCenter: Phaser.Scale.CENTER_BOTH,
+    autoCenter: Phaser.Scale.CENTER_HORIZONTALLY,
     width: screenSize.width.value,
     height: screenSize.height.value,
     fullscreenTarget: 'game-container',
