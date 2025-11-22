@@ -39,8 +39,19 @@ export const initUIDom = (scene: Phaser.Scene, html: string): Phaser.GameObjects
   const gameWidth = scene.scale.width;
   const gameHeight = scene.scale.height;
 
-  // Position at top-left (0,0) with top-left origin - ensure NO margins/padding/offsets
-  const dom = scene.add.dom(0, 0, 'div', `
+  // Calculate vertical offset when game is centered (CENTER_BOTH)
+  // This ensures UI stays at viewport top even when game has black bars
+  const canvas = scene.scale.canvas;
+  const parent = scene.scale.parent;
+  const parentHeight = parent ? parent.clientHeight : window.innerHeight;
+  const canvasHeight = canvas.style.height ? parseInt(canvas.style.height) : canvas.height;
+  const topOffset = (parentHeight - canvasHeight) / 2;
+
+  // Convert pixel offset to game coordinate offset
+  const gameYOffset = topOffset / scene.scale.displayScale.y;
+
+  // Position at top-left but offset upward to compensate for centering
+  const dom = scene.add.dom(0, -gameYOffset, 'div', `
     width: ${gameWidth}px;
     height: ${gameHeight}px;
     position: relative;
