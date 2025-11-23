@@ -43,6 +43,9 @@ const config: Phaser.Types.Core.GameConfig = {
   input: {
     // Prevent canvas from interfering with DOM UI elements
     windowEvents: true,
+  },
+  loader: {
+    baseURL: '/bear-jumpventure/'
   }
 };
 
