@@ -239,7 +239,7 @@
   },
   "bossConfig": {
     "bossTriggerScore": {
-      "value": 589,
+      "value": 200,
       "type": "number",
       "description": "Score required to trigger boss fight"
     }
